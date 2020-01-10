@@ -1,4 +1,4 @@
-import Vue from 'vue'
+// import Vue from 'vue'
 // import ClassicEditor from '@ckeditor/ckeditor5-build-classic'
 // import VueCkeditor from 'vue-ckeditor5'
 
@@ -10,5 +10,3 @@ import Vue from 'vue'
 // }
 // ClassicEditor.builtinPlugins.map(plugin => console.log('isi ::', plugin.pluginName))
 // Vue.use(VueCkeditor.plugin, options)
-
-

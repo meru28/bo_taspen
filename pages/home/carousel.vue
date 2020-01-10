@@ -9,7 +9,7 @@
               <i class="header-icon lnr-database icon-gradient bg-malibu-beach" />Daftar Galeri Carousel
             </div>
             <div class="col d-block text-right">
-              <button class="btn btn-danger">
+              <button class="btn btn-danger" data-toggle="modal" data-target="#uploadModal">
                 Tambah Foto
               </button>
             </div>
@@ -32,22 +32,24 @@
                           </div>
                         </div>
                         <fragment v-if="selectedEditId === true">
-                          <div class="col-sm-5">
-                            <div class="position-relative form-group">
-                              <label for="deskripsi" class="">Rubah Foto</label>
-                              <input id="deskripsi" name="city" placeholder="deskripsi" type="file" class="form-control border-0">
+                          <!-- <b-form @submit="onSubmitEdit"> -->
+                            <div class="col-sm-5">
+                              <div class="position-relative form-group">
+                                <label for="deskripsi" class="">Rubah Foto</label>
+                                <input id="deskripsi" name="city" placeholder="deskripsi" ref="filesCarousel" type="file" class="form-control border-0" @change="handleFilesUpload()">
+                              </div>
                             </div>
-                          </div>
-                          <div class="col-lg-3">
-                            <div class="widget-content-left pt-3">
-                              <button class="border-0 btn-transition btn btn-success">
-                                <font-awesome-icon icon="check" /> Simpan
-                              </button>
-                              <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem">
-                                <font-awesome-icon icon="trash-alt" /> Batal
-                              </button>
+                            <div class="col-lg-3">
+                              <div class="widget-content-left pt-3">
+                                <button class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
+                                  <font-awesome-icon icon="check" /> Simpan
+                                </button>
+                                <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem">
+                                  <font-awesome-icon icon="trash-alt" /> Batal
+                                </button>
+                              </div>
                             </div>
-                          </div>
+                          <!-- </b-form> -->
                         </fragment>
                         <fragment v-else>
                           <div class="widget-content-left">
@@ -218,7 +220,15 @@
                 </div>
             </div>
         </div>
+      }
       </div> -->
+    <ModalUpload />
+      <b-form @submit="onSubmit">
+        Pilih gambar :
+        <input type="file" name="file" ref="filesCarousel" id="filesCarousel" class="form-control" @change="handleFilesUpload()" />
+        <br>
+        <button type="submit" class="btn btn-info" value="Upload" id="btn_upload">Upload</button>
+      </b-form>
     </div>
   </fragment>
 </template>
@@ -237,7 +247,9 @@ import {
   faTh
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import axios from 'axios'
 import PageTitle from '~/components/_base/PageTitle'
+import ModalUpload from '~/components/_base/ModalUpload'
 
 library.add(
   faTrashAlt,
@@ -255,6 +267,7 @@ export default {
   components: {
     PageTitle,
     VuePerfectScrollbar,
+    ModalUpload,
     'font-awesome-icon': FontAwesomeIcon
   },
   data () {
@@ -262,13 +275,65 @@ export default {
       heading: 'Galeri Carousel',
       subheading: 'Silakan edit galeri carousel di bawah ini, Anda dapat menambah dan menghapus gambar.',
       icon: 'pe-7s-album icon-gradient bg-plum-plate',
-      selectedEditId: false
+      selectedEditId: false,
+      imgCarousel: [],
+      editImgCarousel: []
     }
+  },
+  mounted () {
+    this.getHome()
   },
   methods: {
     editItem () {
       this.selectedEditId = !this.selectedEditId
       console.log('coba ::', this.selectedEditId)
+    },
+
+    handleFilesUpload () {
+      this.editImgCarousel = this.$refs.filesCarousel.files
+      // console.log('isi ::', this.editImgCarousel)
+    },
+
+    async getHome () {
+      await axios.get('http://localhost:8081/api/home')
+        .then((res) => {
+          this.imgCarousel = res.data
+          // console.log('get home ::', res.data)
+        }).catch(err => alert('gagal fetch home', err))
+    },
+
+    async onSubmit (evt) {
+      evt.preventDefault()
+      const formData = new FormData()
+      const headers = {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }
+      formData.append('pictCarousel', this.editImgCarousel[0])
+      for (const value of formData.values()) {
+        console.log('isi fd ::', value)
+      }
+      await axios.post('http://localhost:8081/api/home/single-upload', formData, headers)
+        .then((res) => {
+          alert('sukses')
+        })
+        .catch(err => alert('gagal upload', err))
+    },
+
+    async onSubmitEdit (evt) {
+      evt.preventDefault()
+      const formData = new FormData()
+      const headers = {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }
+      formData.append('pictEditCarousel', this.editImgCarousel[0])
+      // for (const value of formData.values()) {
+      //   console.log('isi fd ::', value)
+      // }
+      await axios.post('http://localhost:8081/api/home/edit-carousel', formData, headers)
+        .then((res) => {
+          alert('sukses edit img carousel')
+        })
+        .catch(err => alert('gagal edit', err))
     }
   }
 }
