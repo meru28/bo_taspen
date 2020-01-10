@@ -18,7 +18,7 @@
             <div class="scroll-area-lg">
               <VuePerfectScrollbar class="scrollbar-container">
                 <ul class="todo-list-wrapper list-group list-group-flush">
-                  <li class="list-group-item">
+                  <li v-for="(carousel, index) in imgCarousel" :key="index" class="list-group-item">
                     <div class="todo-indicator bg-info" />
                     <div class="widget-content p-0">
                       <div class="widget-content-wrapper">
@@ -27,11 +27,11 @@
                             <img
                               width="100"
                               class="rounded"
-                              src="@/assets/images/avatars/1.jpg"
+                              :src="'http://localhost:8081' + carousel.imagePath"
                               alt="">
                           </div>
                         </div>
-                        <fragment v-if="selectedEditId === true">
+                        <fragment v-if="selectedEditId === carousel._id">
                           <!-- <b-form @submit="onSubmitEdit"> -->
                             <div class="col-sm-5">
                               <div class="position-relative form-group">
@@ -53,7 +53,7 @@
                         </fragment>
                         <fragment v-else>
                           <div class="widget-content-left">
-                            <button class="border-0 btn-transition btn btn-info" @click="editItem">
+                            <button class="border-0 btn-transition btn btn-info" @click="editItem(carousel._id)">
                               Edit Foto
                             </button>
                             <button class="border-0 btn-transition btn btn-outline-danger">
@@ -275,7 +275,7 @@ export default {
       heading: 'Galeri Carousel',
       subheading: 'Silakan edit galeri carousel di bawah ini, Anda dapat menambah dan menghapus gambar.',
       icon: 'pe-7s-album icon-gradient bg-plum-plate',
-      selectedEditId: false,
+      selectedEditId: '',
       imgCarousel: [],
       editImgCarousel: []
     }
@@ -284,8 +284,8 @@ export default {
     this.getHome()
   },
   methods: {
-    editItem () {
-      this.selectedEditId = !this.selectedEditId
+    editItem (id) {
+      this.selectedEditId = id
       console.log('coba ::', this.selectedEditId)
     },
 
@@ -297,7 +297,7 @@ export default {
     async getHome () {
       await axios.get('http://localhost:8081/api/home')
         .then((res) => {
-          this.imgCarousel = res.data
+          this.imgCarousel = res.data.home.imageCarousel
           // console.log('get home ::', res.data)
         }).catch(err => alert('gagal fetch home', err))
     },
@@ -326,11 +326,12 @@ export default {
         headers: { 'Content-Type': 'multipart/form-data' }
       }
       formData.append('pictEditCarousel', this.editImgCarousel[0])
-      // for (const value of formData.values()) {
-      //   console.log('isi fd ::', value)
-      // }
+      for (const value of formData.values()) {
+        console.log('isi fd ::', value)
+      }
       await axios.post('http://localhost:8081/api/home/edit-carousel', formData, headers)
         .then((res) => {
+          this.selectedEditId = ''
           alert('sukses edit img carousel')
         })
         .catch(err => alert('gagal edit', err))
