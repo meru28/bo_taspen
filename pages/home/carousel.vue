@@ -294,7 +294,7 @@ export default {
     },
 
     async getHome () {
-      await axios.get('http://localhost:8081/api/home')
+      await axios.get('http://0.0.0.0:8081/api/home')
         .then((res) => {
           this.imgCarousel = res.data.home.imageCarousel
           // console.log('get home ::', res.data)
@@ -311,7 +311,7 @@ export default {
       for (const value of formData.values()) {
         console.log('isi fd ::', value)
       }
-      await axios.post('http://localhost:8081/api/home/single-upload-carousel', formData, headers)
+      await axios.post('http://0.0.0.0:8081/api/home/single-upload-carousel', formData, headers)
         .then((res) => {
           alert('sukses')
           window.location.reload()
@@ -330,7 +330,7 @@ export default {
         for (const value of formData.values()) {
           console.log('isi fd ::', value)
         }
-        await axios.post('http://localhost:8081/api/home/edit-carousel/' + this.selectedEditId, formData, headers)
+        await axios.post('http://0.0.0.0:8081/api/home/edit-carousel/' + this.selectedEditId, formData, headers)
           .then((res) => {
             alert('sukses edit img carousel')
             this.selectedEditId = ''
@@ -344,7 +344,7 @@ export default {
     },
 
     async onDeleteImage (id) {
-      await axios.delete('http://localhost:8081/api/home/delete-carousel/' + id)
+      await axios.delete('http://0.0.0.0:8081/api/home/delete-carousel/' + id)
         .then((res) => {
           alert('sukses hapus image')
           // window.location.reload()

@@ -113,7 +113,7 @@ export default {
   },
   methods: {
     async getHome () {
-      await axios.get('http://localhost:8081/api/home')
+      await axios.get('http://0.0.0.0:8081/api/home')
         .then((res) => {
           console.log('test home', res.data.home)
           this.titleTaspen = res.data.home.titleTaspen
@@ -135,7 +135,7 @@ export default {
       const sukuBunga = this.sukuBunga
       const dataNasabah = this.dataNasabah
       const bprDescription = this.bprDescription
-      await axios.post('http://localhost:8081/api/home/edit', {
+      await axios.post('http://0.0.0.0:8081/api/home/edit', {
         titleTaspen, periode, jangkaWaktu, sukuBunga, dataNasabah, bprDescription
       })
         .then((res) => {
