@@ -18,7 +18,7 @@
             <div class="scroll-area-lg">
               <VuePerfectScrollbar class="scrollbar-container">
                 <ul class="todo-list-wrapper list-group list-group-flush">
-                  <li v-for="(carousel, index) in imgCarousel" :key="index" class="list-group-item">
+                  <li v-for="(carousel) in imgCarousel" :key="carousel._id" class="list-group-item">
                     <div class="todo-indicator bg-info" />
                     <div class="widget-content p-0">
                       <div class="widget-content-wrapper">
@@ -27,16 +27,16 @@
                             <img
                               width="100"
                               class="rounded"
-                              :src="'http://localhost:8081' + carousel.imagePath"
+                              :src="carousel.imageUrl"
                               alt="">
                           </div>
                         </div>
                         <fragment v-if="selectedEditId === carousel._id">
-                          <!-- <b-form @submit="onSubmitEdit"> -->
+                          <b-form @submit="onSubmitEdit">
                             <div class="col-sm-5">
                               <div class="position-relative form-group">
                                 <label for="deskripsi" class="">Rubah Foto</label>
-                                <input id="deskripsi" name="city" placeholder="deskripsi" ref="filesCarousel" type="file" class="form-control border-0" @change="handleFilesUpload()">
+                                <input type="file" name="file" id="editImage" class="form-control" />
                               </div>
                             </div>
                             <div class="col-lg-3">
@@ -44,19 +44,19 @@
                                 <button class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
                                   <font-awesome-icon icon="check" /> Simpan
                                 </button>
-                                <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem">
+                                <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem(0)">
                                   <font-awesome-icon icon="trash-alt" /> Batal
                                 </button>
                               </div>
                             </div>
-                          <!-- </b-form> -->
+                          </b-form>
                         </fragment>
                         <fragment v-else>
                           <div class="widget-content-left">
                             <button class="border-0 btn-transition btn btn-info" @click="editItem(carousel._id)">
                               Edit Foto
                             </button>
-                            <button class="border-0 btn-transition btn btn-outline-danger">
+                            <button class="border-0 btn-transition btn btn-outline-danger" @click="onDeleteImage(carousel._id)">
                               <font-awesome-icon icon="trash-alt" /> Hapus
                             </button>
                           </div>
@@ -225,7 +225,7 @@
     <ModalUpload />
       <b-form @submit="onSubmit">
         Pilih gambar :
-        <input type="file" name="file" ref="filesCarousel" id="filesCarousel" class="form-control" @change="handleFilesUpload()" />
+        <input type="file" name="file" ref="filesCarousel" id="filesCarousel" class="form-control" @change="handleFilesUpload" />
         <br>
         <button type="submit" class="btn btn-info" value="Upload" id="btn_upload">Upload</button>
       </b-form>
@@ -289,9 +289,8 @@ export default {
       console.log('coba ::', this.selectedEditId)
     },
 
-    handleFilesUpload () {
+    handleFilesUpload (id) {
       this.editImgCarousel = this.$refs.filesCarousel.files
-      // console.log('isi ::', this.editImgCarousel)
     },
 
     async getHome () {
@@ -312,29 +311,44 @@ export default {
       for (const value of formData.values()) {
         console.log('isi fd ::', value)
       }
-      await axios.post('http://localhost:8081/api/home/single-upload', formData, headers)
+      await axios.post('http://localhost:8081/api/home/single-upload-carousel', formData, headers)
         .then((res) => {
           alert('sukses')
+          window.location.reload()
         })
         .catch(err => alert('gagal upload', err))
     },
 
     async onSubmitEdit (evt) {
-      evt.preventDefault()
-      const formData = new FormData()
-      const headers = {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      if (document.getElementById('editImage').files[0] !== undefined) {
+        evt.preventDefault()
+        const formData = new FormData()
+        const headers = {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }
+        formData.append('pictEditCarousel', document.getElementById('editImage').files[0])
+        for (const value of formData.values()) {
+          console.log('isi fd ::', value)
+        }
+        await axios.post('http://localhost:8081/api/home/edit-carousel/' + this.selectedEditId, formData, headers)
+          .then((res) => {
+            alert('sukses edit img carousel')
+            this.selectedEditId = ''
+            window.location.reload()
+          })
+          .catch(err => alert('gagal edit', err))
+      } else {
+        evt.preventDefault()
+        alert('Anda belum memilih gambar pengganti!')
       }
-      formData.append('pictEditCarousel', this.editImgCarousel[0])
-      for (const value of formData.values()) {
-        console.log('isi fd ::', value)
-      }
-      await axios.post('http://localhost:8081/api/home/edit-carousel', formData, headers)
+    },
+
+    async onDeleteImage (id) {
+      await axios.delete('http://localhost:8081/api/home/delete-carousel/' + id)
         .then((res) => {
-          this.selectedEditId = ''
-          alert('sukses edit img carousel')
-        })
-        .catch(err => alert('gagal edit', err))
+          alert('sukses hapus image')
+          // window.location.reload()
+        }).catch(err => alert('gagal hapus image', err))
     }
   }
 }
