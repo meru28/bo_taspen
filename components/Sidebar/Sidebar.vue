@@ -39,7 +39,7 @@
           <li>
             <router-link to="/carousel">
               <i class="metismenu-icon pe-7s-album" />
-              Carousel
+              Galeri Carousel
             </router-link>
           </li>
           <li>
@@ -52,6 +52,12 @@
             <router-link to="/galeri-karyawan">
               <i class="metismenu-icon pe-7s-user" />
               Galeri Karyawan
+            </router-link>
+          </li>
+           <li>
+            <router-link to="/galeri-karyawan">
+              <i class="metismenu-icon pe-7s-user" />
+              Galeri Kantor Cabang
             </router-link>
           </li>
           <li class="app-sidebar__heading">

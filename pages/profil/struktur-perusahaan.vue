@@ -22,20 +22,20 @@
                             <img
                               width="100"
                               class="rounded"
-                              src="@/assets/images/avatars/1.jpg"
-                              alt="">
+                              :src="imgStruktur.imageUrl"
+                              :alt="imgStruktur.label">
                           </div>
                         </div>
                         <div v-if="selectedEditImage === true" class="form-row w-100">
                           <div class="col-lg-6">
                             <div class="position-relative form-group">
-                              <label for="deskripsi" class="">Rubah Foto</label>
-                              <input id="deskripsi" name="city" placeholder="deskripsi" type="file" class="form-control border-0">
+                              <label for="struktur" class="">Rubah Foto</label>
+                              <input id="struktur" name="struktur" placeholder="struktur" type="file" class="form-control border-0">
                             </div>
                           </div>
                           <div class="col-lg-4">
                             <div class="widget-content-left pt-4">
-                              <button class="border-0 btn-transition btn btn-success">
+                              <button class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
                                 <font-awesome-icon icon="check" /> Simpan
                               </button>
                               <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem">
@@ -58,6 +58,12 @@
           </div>
         </div>
       </div>
+      <!-- <b-form @submit="onSubmit">
+        Pilih gambar :
+        <input type="file" name="file" ref="filesih" id="filesCarousel" class="form-control" @change="handleFilesUpload" />
+        <br>
+        <button type="submit" class="btn btn-info" value="Upload" id="btn_upload">Upload</button>
+      </b-form> -->
     </div>
   </fragment>
 </template>
@@ -65,6 +71,7 @@
 import Vue from 'vue'
 import Fragment from 'vue-fragment'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import axios from 'axios'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faTrashAlt,
@@ -93,12 +100,71 @@ export default {
       heading: 'Struktur Perusahaan',
       subheading: 'Silakan edit struktur perusahaan di bawah ini',
       icon: 'pe-7s-display2 icon-gradient bg-plum-plate',
-      selectedEditImage: false
+      selectedEditImage: false,
+      imgStruktur: {},
+      editImgStruktur: []
     }
+  },
+  mounted () {
+    this.getStruktur()
   },
   methods: {
     editItem () {
       this.selectedEditImage = !this.selectedEditImage
+    },
+
+    handleFilesUpload () {
+      this.editImgStruktur = this.$refs.filesih.files
+    },
+
+    async getStruktur () {
+      await axios.get('http://bprtaspen.com/api/profil/struktur')
+        .then((res) => {
+          this.imgStruktur = res.data.struktur.imageStruktur
+          console.log('struktur', res)
+        })
+    },
+
+    async onSubmit (evt) {
+      evt.preventDefault()
+      const formData = new FormData()
+      const headers = {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }
+      formData.append('pictStruktur', this.editImgStruktur[0])
+      for (const value of formData.values()) {
+        console.log('isi fd ::', value)
+      }
+      await axios.post('http://bprtaspen.com/api/profil/struktur/add', formData, headers)
+        .then((res) => {
+          alert('sukses')
+          window.location.reload()
+        })
+        .catch(err => alert('gagal upload', err))
+    },
+
+    async onSubmitEdit (evt) {
+      if (document.getElementById('struktur').files[0] !== undefined) {
+        evt.preventDefault()
+        const formData = new FormData()
+        const headers = {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }
+        formData.append('pictStruktur', document.getElementById('struktur').files[0])
+        for (const value of formData.values()) {
+          console.log('isi fd ::', value)
+        }
+        await axios.post('http://localhost:8081/api/profil/struktur/edit', formData, headers)
+          .then((res) => {
+            alert('sukses edit img struktur')
+            this.selectedEditImage = !this.selectedEditImage
+            window.location.reload()
+          })
+          .catch(err => alert('gagal edit', err))
+      } else {
+        evt.preventDefault()
+        alert('Anda belum memilih gambar pengganti!')
+      }
     }
   }
 }
