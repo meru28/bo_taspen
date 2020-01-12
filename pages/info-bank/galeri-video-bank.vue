@@ -117,7 +117,7 @@ export default {
       for (const value of formData.values()) {
         console.log('isi fd ::', value)
       }
-      await axios.post('https://bprtaspen.com/api/info-bank', formData, headers)
+      await axios.post('http://localhost:8081/api/info-bank', formData, headers)
         .then(res => alert('sukses tambah video'))
         .catch(err => console.log('sukses video error :', err))
     },

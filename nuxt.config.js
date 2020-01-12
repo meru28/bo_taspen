@@ -101,6 +101,14 @@ export default {
           net: 'empty',
           tls: 'empty'
         }
+      } else {
+        config.node = {
+          // console: 'empty',
+          fs: 'empty',
+          child_process: 'empty',
+          net: 'empty',
+          tls: 'empty'
+        }
       }
     }
   },
