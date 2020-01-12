@@ -14,6 +14,7 @@ import Kredit from '~/pages/produk-layanan/kredit'
 import Deposito from '~/pages/produk-layanan/deposito'
 import Layanan from '~/pages/produk-layanan/layanan'
 import InfoBank from '~/pages/info-bank/galeri-info-bank'
+import VideoBank from '~/pages/info-bank/galeri-video-bank'
 
 Vue.use(Router)
 
@@ -87,6 +88,11 @@ export function createRouter () {
         path: '/galeri-info',
         component: InfoBank,
         name: 'InfoBank'
+      },
+      {
+        path: '/galeri-video',
+        component: VideoBank,
+        name: 'VideoBank'
       }
     ]
   })

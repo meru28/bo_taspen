@@ -286,7 +286,7 @@ export default {
   methods: {
     editItem (id) {
       this.selectedEditId = id
-      console.log('coba ::', this.selectedEditId)
+      // console.log('coba ::', this.selectedEditId)
     },
 
     handleFilesUpload (id) {
@@ -298,25 +298,30 @@ export default {
         .then((res) => {
           this.imgCarousel = res.data.home.imageCarousel
           // console.log('get home ::', res.data)
-        }).catch(err => alert('gagal fetch home', err))
+        }).catch(err => console.log('gagal fetch home', err))
     },
 
     async onSubmit (evt) {
       evt.preventDefault()
-      const formData = new FormData()
-      const headers = {
-        headers: { 'Content-Type': 'multipart/form-data' }
+      if (this.editImgCarousel[0] !== undefined) {
+        const formData = new FormData()
+        const headers = {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }
+        formData.append('pictCarousel', this.editImgCarousel[0])
+        for (const value of formData.values()) {
+          console.log('isi fd ::', value)
+        }
+        await axios.post('https://bprtaspen.com/api/home/single-upload-carousel', formData, headers)
+          .then((res) => {
+            alert('sukses')
+            window.location.reload()
+          })
+          .catch(err => alert('gagal upload', err))
+      } else {
+        evt.preventDefault()
+        alert('Anda belum memilih gambar!')
       }
-      formData.append('pictCarousel', this.editImgCarousel[0])
-      for (const value of formData.values()) {
-        console.log('isi fd ::', value)
-      }
-      await axios.post('https://bprtaspen.com/api/home/single-upload-carousel', formData, headers)
-        .then((res) => {
-          alert('sukses')
-          window.location.reload()
-        })
-        .catch(err => alert('gagal upload', err))
     },
 
     async onSubmitEdit (evt) {

@@ -56,7 +56,7 @@
           </li>
            <li>
             <router-link to="/galeri-karyawan">
-              <i class="metismenu-icon pe-7s-user" />
+              <i class="metismenu-icon pe-7s-culture" />
               Galeri Kantor Cabang
             </router-link>
           </li>
@@ -112,8 +112,14 @@
             Info Bank
           </li>
           <li>
-            <router-link to="/galeri-info">
+            <router-link to="/galeri-video">
               <i class="metismenu-icon pe-7s-mouse" />
+              Galeri Video Bank
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/galeri-info">
+              <i class="metismenu-icon pe-7s-magic-wand" />
               Galeri Info Bank
             </router-link>
           </li>

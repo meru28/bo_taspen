@@ -118,7 +118,7 @@ export default {
     },
 
     async getStruktur () {
-      await axios.get('http://bprtaspen.com/api/profil/struktur')
+      await axios.get('https://bprtaspen.com/api/profil/struktur')
         .then((res) => {
           this.imgStruktur = res.data.struktur.imageStruktur
           console.log('struktur', res)
@@ -135,7 +135,7 @@ export default {
       for (const value of formData.values()) {
         console.log('isi fd ::', value)
       }
-      await axios.post('http://bprtaspen.com/api/profil/struktur/add', formData, headers)
+      await axios.post('https://bprtaspen.com/api/profil/struktur/add', formData, headers)
         .then((res) => {
           alert('sukses')
           window.location.reload()
@@ -154,7 +154,7 @@ export default {
         for (const value of formData.values()) {
           console.log('isi fd ::', value)
         }
-        await axios.post('http://localhost:8081/api/profil/struktur/edit', formData, headers)
+        await axios.post('https://bprtaspen.com/api/profil/struktur/edit', formData, headers)
           .then((res) => {
             alert('sukses edit img struktur')
             this.selectedEditImage = !this.selectedEditImage

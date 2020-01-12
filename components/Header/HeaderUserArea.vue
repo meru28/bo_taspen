@@ -7,7 +7,7 @@
             <b-dropdown toggle-class="p-0 mr-2" menu-class="dropdown-menu-lg" variant="link" right>
               <span slot="button-content">
                 <div class="icon-wrapper icon-wrapper-alt rounded-circle">
-                  <img width="42" class="rounded-circle" src="~assets/images/avatars/1.jpg" alt="">
+                  <img width="42" class="rounded-circle" src="~assets/images/avatars/13.jpg" alt="">
                 </div>
               </span>
               <button type="button" tabindex="0" class="dropdown-item">Menus</button>
@@ -20,7 +20,7 @@
           </div>
           <div class="widget-content-left  ml-3 header-user-info">
             <div class="widget-heading">
-              Alina Mclourd
+              Iqbal
             </div>
             <div class="widget-subheading">
               VP People Manager

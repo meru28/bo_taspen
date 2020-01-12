@@ -58,7 +58,7 @@
                     aria-haspopup="true"
                     aria-expanded="false"
                     class="p-0 btn">
-                    <img width="42" class="rounded-circle" src="~assets/images/avatars/1.jpg" alt>
+                    <img width="42" class="rounded-circle" src="~assets/images/avatars/13.jpg" alt>
                     <i class="fa fa-angle-down ml-2 opacity-8" />
                   </a>
                   <div
@@ -87,7 +87,7 @@
               </div>
               <div class="widget-content-left ml-3 header-user-info">
                 <div class="widget-heading">
-                  Alina Mclourd
+                  Iqbal
                 </div>
                 <div class="widget-subheading">
                   VP People Manager
