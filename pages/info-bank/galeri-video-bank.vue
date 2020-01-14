@@ -1,23 +1,23 @@
 <template>
   <fragment>
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
-      <div class="content">
+    <div class="content">
       <div class="main-card mb-3 card">
         <div class="card-body">
           <h5 class="card-title">
             Galeri Video
           </h5>
           <div class="col-md-6">
-        <div class="i-frame-yt">
-          <iframe
-            width="50%"
-            height="100%"
-            :src="hiddenSource"
-            frameborder="0"
-            allowfullscreen
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" />
-        </div>
-      </div>
+            <div class="i-frame-yt">
+              <iframe
+                width="50%"
+                height="100%"
+                :src="hiddenSource"
+                frameborder="0"
+                allowfullscreen
+                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" />
+            </div>
+          </div>
           <form class="" @submit="onSubmit">
             <div class="position-relative row form-group">
               <label for="embedVideo" class="col-sm-2 col-form-label">Sumber Embed Video :</label>
@@ -26,8 +26,8 @@
               </div>
             </div>
             Pilih gambar :
-          <input type="file" name="filesInfoBank" ref="filesInfoBank" id="filesInfoBank" class="form-control" multiple @change="handleFilesUpload" />
-          <br>
+            <input type="file" name="filesInfoBank" ref="filesInfoBank" id="filesInfoBank" class="form-control" multiple @change="handleFilesUpload">
+            <br>
             <div class="position-relative row form-check">
               <div class="col-sm-10 offset-sm-2">
                 <button class="btn btn-primary" type="submit">
@@ -117,7 +117,7 @@ export default {
       for (const value of formData.values()) {
         console.log('isi fd ::', value)
       }
-      await axios.post('http://localhost:8081/api/info-bank', formData, headers)
+      await axios.post('https://bprtaspen.com/api/info-bank', formData, headers)
         .then(res => alert('sukses tambah video'))
         .catch(err => console.log('sukses video error :', err))
     },
