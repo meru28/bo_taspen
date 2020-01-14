@@ -256,6 +256,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import axios from 'axios'
+import instance from '~/plugins/axios'
 import PageTitle from '~/components/_base/PageTitle'
 import ModalUpload from '~/components/_base/ModalUpload'
 import properties from '~/properties'
@@ -302,12 +303,20 @@ export default {
       this.editImgCarousel = this.$refs.filesCarousel.files
     },
 
-    async getHome () {
-      await axios.get(properties.LIST_API.HOME)
+    getHome () {
+      this.home()
         .then((res) => {
           this.imgCarousel = res.data.home.imageCarousel
           // console.log('get home ::', res.data)
         }).catch(err => console.log('gagal fetch home', err))
+    },
+
+    async home () {
+      const response = await instance({
+        url: properties.LIST_API.HOME,
+        method: 'get'
+      })
+      return response
     },
 
     async onSubmit (evt) {
