@@ -18,7 +18,7 @@
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" />
             </div>
           </div>
-          <form class="" @submit="onSubmit">
+          <b-form @submit="onSubmit">
             <div class="position-relative row form-group">
               <label for="embedVideo" class="col-sm-2 col-form-label">Sumber Embed Video :</label>
               <div class="col-sm-10">
@@ -35,7 +35,7 @@
                 </button>
               </div>
             </div>
-          </form>
+          </b-form>
         </div>
       </div>
     </div>
@@ -90,7 +90,7 @@ export default {
     }
   },
   mounted () {
-    this.getInfoBank()
+    // this.getInfoBank()
   },
   methods: {
     handleFilesUpload () {
@@ -114,10 +114,10 @@ export default {
       }
       toFormData(formData, this.imgGaleriBank, 'pictInfoBank')
       formData.append('videoTaspen', JSON.stringify(source))
-      for (const value of formData.values()) {
-        console.log('isi fd ::', value)
-      }
-      await axios.post('https://bprtaspen.com/api/info-bank', formData, headers)
+      // for (const value of formData.values()) {
+      //   console.log('isi fd ::', value)
+      // }
+      await axios.post('https://bprtaspen.com/api/info-bank/add', formData, headers)
         .then(res => alert('sukses tambah video'))
         .catch(err => console.log('sukses video error :', err))
     },
