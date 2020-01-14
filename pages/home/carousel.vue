@@ -222,12 +222,20 @@
         </div>
       }
       </div> -->
-    <ModalUpload />
+      <ModalUpload />
       <b-form @submit="onSubmit">
         Pilih gambar :
-        <input type="file" name="file" ref="filesCarousel" id="filesCarousel" class="form-control" @change="handleFilesUpload" />
+        <input
+          id="filesCarousel"
+          ref="filesCarousel"
+          type="file"
+          name="file"
+          class="form-control"
+          @change="handleFilesUpload">
         <br>
-        <button type="submit" class="btn btn-info" value="Upload" id="btn_upload">Upload</button>
+        <button id="btn_upload" type="submit" class="btn btn-info" value="Upload">
+          Upload
+        </button>
       </b-form>
     </div>
   </fragment>
@@ -250,6 +258,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import axios from 'axios'
 import PageTitle from '~/components/_base/PageTitle'
 import ModalUpload from '~/components/_base/ModalUpload'
+import properties from '~/properties'
 
 library.add(
   faTrashAlt,
@@ -294,7 +303,7 @@ export default {
     },
 
     async getHome () {
-      await axios.get('https://bprtaspen.com/api/home')
+      await axios.get(properties.LIST_API.HOME)
         .then((res) => {
           this.imgCarousel = res.data.home.imageCarousel
           // console.log('get home ::', res.data)
@@ -312,7 +321,7 @@ export default {
         for (const value of formData.values()) {
           console.log('isi fd ::', value)
         }
-        await axios.post('https://bprtaspen.com/api/home/single-upload-carousel', formData, headers)
+        await axios.post(properties.LIST_API.ADD_IMAGE_CAROUSEL, formData, headers)
           .then((res) => {
             alert('sukses')
             window.location.reload()
@@ -335,7 +344,7 @@ export default {
         for (const value of formData.values()) {
           console.log('isi fd ::', value)
         }
-        await axios.post('https://bprtaspen.com/api/home/edit-carousel/' + this.selectedEditId, formData, headers)
+        await axios.post(properties.LIST_API.EDIT_IMAGE_CAROUSEL + this.selectedEditId, formData, headers)
           .then((res) => {
             alert('sukses edit img carousel')
             this.selectedEditId = ''
@@ -349,7 +358,7 @@ export default {
     },
 
     async onDeleteImage (id) {
-      await axios.delete('https://bprtaspen.com/api/home/delete-carousel/' + id)
+      await axios.delete(properties.LIST_API.DELETE_CAROUSEL + id)
         .then((res) => {
           alert('sukses hapus image')
           // window.location.reload()

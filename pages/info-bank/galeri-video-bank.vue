@@ -22,11 +22,23 @@
             <div class="position-relative row form-group">
               <label for="embedVideo" class="col-sm-2 col-form-label">Sumber Embed Video :</label>
               <div class="col-sm-10">
-                <textarea id="embedVideo" placeholder="Paste seluruh kode embed dari youtube Anda disini" v-model="videoTaspen" name="text" class="form-control" />
+                <textarea
+                  id="embedVideo"
+                  v-model="videoTaspen"
+                  placeholder="Paste seluruh kode embed dari youtube Anda disini"
+                  name="videoTaspen"
+                  class="form-control" />
               </div>
             </div>
             Pilih gambar :
-            <input type="file" name="filesInfoBank" ref="filesInfoBank" id="filesInfoBank" class="form-control" multiple @change="handleFilesUpload">
+            <input
+              id="filesInfoBank"
+              ref="filesInfoBank"
+              type="file"
+              name="filesInfoBank"
+              class="form-control"
+              multiple
+              @change="handleFilesUpload">
             <br>
             <div class="position-relative row form-check">
               <div class="col-sm-10 offset-sm-2">
@@ -114,9 +126,10 @@ export default {
       }
       toFormData(formData, this.imgGaleriBank, 'pictInfoBank')
       formData.append('videoTaspen', JSON.stringify(source))
-      // for (const value of formData.values()) {
-      //   console.log('isi fd ::', value)
-      // }
+      for (const value of formData.values()) {
+        console.log('isi fd ::', value)
+      }
+      console.log('form data', formData)
       await axios.post('https://bprtaspen.com/api/info-bank/add', formData, headers)
         .then(res => alert('sukses tambah video'))
         .catch(err => console.log('sukses video error :', err))

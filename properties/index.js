@@ -1,14 +1,13 @@
-const taspenProperties = {
-  LIST_API: {
-    HOME: '/api/home',
-    EDIT_HOME: '/api/home/edit',
-    ADD_IMAGE_CAROUSEL: '/api/home/single-upload-carousel',
-    EDIT_IMAGE_CAROUSEL: '/api/home/edit-carousel'
-  },
-  TASPEN: {
-    LOCAL: 'http://localhost:8081',
-    BASE: 'https://bprtaspen.com'
-  }
+import appProductionProperties from './app-production'
+import appLokalProduction from './app-lokal'
+
+// eslint-disable-next-line import/no-mutable-exports
+let properties
+
+if (process.env.MODE_ENV === 'lokal') {
+  properties = appLokalProduction
+} else {
+  properties = appProductionProperties
 }
 
-export default taspenProperties
+export default properties
