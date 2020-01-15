@@ -319,18 +319,19 @@ export default {
       return response
     },
 
-    async onSubmit (evt) {
+    onSubmit (evt) {
       evt.preventDefault()
       if (this.editImgCarousel[0] !== undefined) {
         const formData = new FormData()
-        const headers = {
-          headers: { 'Content-Type': 'multipart/form-data' }
-        }
+        // const headers = {
+        //   headers: { 'Content-Type': 'multipart/form-data' }
+        // }
         formData.append('pictCarousel', this.editImgCarousel[0])
         for (const value of formData.values()) {
           console.log('isi fd ::', value)
         }
-        await axios.post(properties.LIST_API.ADD_IMAGE_CAROUSEL, formData, headers)
+        // await axios.post(properties.LIST_API.ADD_IMAGE_CAROUSEL, formData, headers)
+        this.addImageCarousel(formData)
           .then((res) => {
             alert('sukses')
             window.location.reload()
@@ -340,6 +341,18 @@ export default {
         evt.preventDefault()
         alert('Anda belum memilih gambar!')
       }
+    },
+
+    async addImageCarousel (formData) {
+      const headers = {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }
+      const response = await instance({
+        url: properties.LIST_API.ADD_IMAGE_CAROUSEL,
+        data: formData,
+        headers
+      })
+      return response
     },
 
     async onSubmitEdit (evt) {
