@@ -2,7 +2,7 @@ import axios from 'axios'
 import properties from '~/properties/index'
 
 const instance = axios.create({
-  baseURL: properties.TASPEN.LOCAL,
+  baseURL: properties.TASPEN.BASE,
   timeout: 30000
 })
 const date = new Date()
