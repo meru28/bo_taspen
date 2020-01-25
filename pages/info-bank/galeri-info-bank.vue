@@ -22,7 +22,7 @@
                             <img
                               width="100"
                               class="rounded"
-                              :src="'http://localhost:8081' + img.imagePath"
+                              :src="img.imagePath"
                               alt="">
                           </div>
                         </div>
@@ -31,7 +31,11 @@
                             <div class="col-sm-5">
                               <div class="position-relative form-group">
                                 <label for="deskripsi" class="">Rubah Foto</label>
-                                <input type="file" name="file" id="editImage" class="form-control" />
+                                <input
+                                  id="editImage"
+                                  type="file"
+                                  name="file"
+                                  class="form-control">
                               </div>
                             </div>
                             <div class="col-lg-3">

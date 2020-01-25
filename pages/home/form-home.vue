@@ -17,7 +17,13 @@
             <div class="position-relative row form-group">
               <label for="periode" class="col-sm-2 col-form-label">Periode</label>
               <div class="col-sm-10">
-                <input id="periode" v-model="periode" name="periode" placeholder="periode" type="text" class="form-control">
+                <input
+                  id="periode"
+                  v-model="periode"
+                  class="form-control"
+                  type="text"
+                  name="periode"
+                  placeholder="periode">
               </div>
             </div>
             <div class="position-relative row form-group">

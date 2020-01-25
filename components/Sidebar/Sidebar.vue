@@ -54,7 +54,7 @@
               Galeri Karyawan
             </router-link>
           </li>
-           <li>
+          <li>
             <router-link to="/galeri-karyawan">
               <i class="metismenu-icon pe-7s-culture" />
               Galeri Kantor Cabang

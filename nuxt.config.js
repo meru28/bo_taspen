@@ -46,7 +46,7 @@ export default {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    { src: '~/plugins/bootstrap.js', ssr: false }
+    // { src: '~/plugins/bootstrap.js', ssr: false }
     // { src: '~plugins/ckeditor.js', mode: 'client' }
   ],
   /*
@@ -64,7 +64,16 @@ export default {
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
     '@nuxtjs/style-resources',
-    '@nuxtjs/router'
+    '@nuxtjs/router',
+    [
+      'vue-sweetalert2/nuxt',
+      {
+        buttonsStyling: false,
+        confirmButtonClass: 'btn btn-swal-confirm',
+        cancelButtonClass: 'btn btn-swal-cancel',
+        allowOutsideClick: false
+      }
+    ]
   ],
   /*
   /*

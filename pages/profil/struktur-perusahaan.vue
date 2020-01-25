@@ -22,7 +22,7 @@
                             <img
                               width="100"
                               class="rounded"
-                              :src="imgStruktur.imageUrl"
+                              :src="imgStruktur.imagePath"
                               :alt="imgStruktur.label">
                           </div>
                         </div>
