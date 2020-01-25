@@ -30,7 +30,7 @@
                   class="form-control" />
               </div>
             </div>
-            Pilih gambar :
+            <!-- Pilih gambar :
             <input
               id="filesInfoBank"
               ref="filesInfoBank"
@@ -38,7 +38,7 @@
               name="filesInfoBank"
               class="form-control"
               multiple
-              @change="handleFilesUpload">
+              @change="handleFilesUpload"> -->
             <br>
             <div class="position-relative row form-check">
               <div class="col-sm-10 offset-sm-2">
@@ -102,7 +102,7 @@ export default {
     }
   },
   mounted () {
-    // this.getInfoBank()
+    this.getInfoBank()
   },
   methods: {
     handleFilesUpload () {

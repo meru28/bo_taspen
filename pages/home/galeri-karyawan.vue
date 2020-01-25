@@ -19,7 +19,7 @@
                           <img
                             width="100"
                             class="rounded"
-                            :src="emp.imagePath"
+                            :src="emp.imageUrl"
                             alt="">
                         </div>
                       </div>

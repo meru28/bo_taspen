@@ -36,7 +36,7 @@
                             <img
                               width="100"
                               class="rounded"
-                              :src="carousel.imagePath"
+                              :src="carousel.imageUrl"
                               alt="">
                           </div>
                         </div>
