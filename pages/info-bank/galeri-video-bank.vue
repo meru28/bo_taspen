@@ -139,7 +139,7 @@ export default {
       evt.preventDefault()
       const source = this.getSourceYt()
       // console.log('test', source)
-      await axios.put('https://bprtaspen.com/api/info-bank/video', {
+      await axios.post('https://bprtaspen.com/api/info-bank/video', {
         source
       })
         .then((res) => {
