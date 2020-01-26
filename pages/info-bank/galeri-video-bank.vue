@@ -18,7 +18,7 @@
                 allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" />
             </div>
           </div>
-          <b-form @submit="onSubmit">
+          <b-form @submit="onSubmitEdit">
             <div class="position-relative row form-group">
               <label for="embedVideo" class="col-sm-2 col-form-label">Sumber Embed Video :</label>
               <div class="col-sm-10">
