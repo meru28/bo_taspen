@@ -35,12 +35,12 @@
                             <div class="col-lg-5">
                               <div class="position-relative form-group">
                                 <label for="deskripsi" class="">Judul Deskripsi</label>
-                                <textarea id="editDesEmp" name="employeeDeskripsi" placeholder="deskripsi" type="text" class="form-control" />
+                                <textarea id="editDesEmp" v-model="labelEmp" name="employeeDeskripsi" type="text" class="form-control" />
                               </div>
                             </div>
                             <div class="col-lg-3">
                               <div class="widget-content-left pt-5">
-                                <button class="border-0 btn-transition btn btn-success">
+                                <button class="border-0 btn-transition btn btn-success" type="submit">
                                   <font-awesome-icon icon="check" /> Simpan
                                 </button>
                                 <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem(0)">
@@ -54,11 +54,11 @@
                       <template v-else>
                         <div class="widget-content-left col-lg-5">
                           <div class="widget-heading">
-                            Go grocery shopping
-                          </div>
-                          <div class="widget-subheading">
                             {{ emp.label }}
                           </div>
+                          <!-- <div class="widget-subheading">
+                            {{ emp.label }}
+                          </div> -->
                         </div>
                         <div class="col-lg-6">
                           <button class="border-0 btn-transition btn btn-info" @click="editItem(emp._id)">
@@ -122,7 +122,7 @@ import {
   faTh
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { getHome } from '~/api/home'
+import { getHome, editEmployee } from '~/api/home'
 import PageTitle from '~/components/_base/PageTitle'
 
 library.add(
@@ -151,11 +151,7 @@ export default {
       selectedEditId: '',
       imgEmployee: [],
       editImgEmployee: [],
-      labelEmp: {
-        label1: '',
-        label2: '',
-        label3: ''
-      }
+      labelEmp: 'Edit Deskripsi Anda'
     }
   },
   mounted () {
@@ -164,21 +160,38 @@ export default {
   methods: {
     editItem (id) {
       this.selectedEditId = id
-      console.log('coba ::', this.selectedEditId)
+      this.imgEmployee.find(obj => obj._id === id.toString())
+      // console.log('coba ::', this.selectedEditId)
     },
 
     async employee () {
       await getHome()
         .then((res) => {
           this.imgEmployee = res.data.home.imageEmployee
-          const keys = Object.keys(this.imgEmployee)
-          for (const key of keys) {
-            console.log('test :', key.length)
-            this.labelEmp = key
-            console.log('isi labelemp :', this.labelEmp)
-          }
+          // const keys = Object.keys(this.imgEmployee)
+          // for (const key of keys) {
+          //   console.log('test :', key.length)
+          //   this.labelEmp = key
+          //   console.log('isi labelemp :', this.labelEmp)
+          // }
         // eslint-disable-next-line handle-callback-err
         }).catch(err => console.log('gagal fetch employee'))
+    },
+
+    async onSubmitEdit (evt) {
+      evt.preventDefault()
+      const formData = new FormData()
+      if (document.getElementById('editImgEmp').files[0] !== undefined) {
+        formData.append('pictEditEmployee', document.getElementById('editImgEmp').files[0])
+      }
+      formData.append('labelEmp', JSON.stringify(this.labelEmp))
+      await editEmployee(formData, this.selectedEditId)
+        .then((res) => {
+          alert('sukses edit img employee Anda')
+          this.selectedEditId = ''
+          window.location.reload()
+        })
+        .catch(err => alert('gagal edit', err))
     }
   }
 }

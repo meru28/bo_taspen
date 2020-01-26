@@ -40,3 +40,13 @@ export function deleteCarousel (id) {
   })
   return response
 }
+
+export function editEmployee (formData, id) {
+  const response = instance({
+    url: properties.LIST_API.EDIT_IMAGE_EMPLOYEE + id,
+    method: 'post',
+    data: formData,
+    headers
+  })
+  return response
+}
