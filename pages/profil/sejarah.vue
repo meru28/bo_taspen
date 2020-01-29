@@ -11,14 +11,12 @@
             <div class="position-relative row form-group">
               <label for="bprDeskripsi" class="col-sm-2 col-form-label">Deskripsi Sejarah BPR DP Taspen :</label>
               <div class="col-sm-10">
-                <TextEditor v-model="text" />
-                <!-- <ckeditor v-model="sejarah" type="classic" :config="editorConfig" /> -->
-                <!-- <textarea id="bprDeskripsi" name="text" class="form-control" /> -->
+                <editor id="myeditor" v-model="sejarah" :editor-toolbar="customToolbar" />
               </div>
             </div>
             <div class="position-relative row form-check">
               <div class="col-sm-10 offset-sm-2">
-                <button class="btn btn-primary" @click="save">
+                <button class="btn btn-primary" @click="onSubmit">
                   Simpan
                 </button>
               </div>
@@ -32,8 +30,9 @@
 <script>
 import Vue from 'vue'
 import Fragment from 'vue-fragment'
+import { VueEditor } from 'vue2-editor'
+import axios from 'axios'
 import PageTitle from '~/components/_base/PageTitle'
-import TextEditor from '~/components/TextEditor/TextEditor'
 
 Vue.use(Fragment.Plugin)
 export default {
@@ -41,36 +40,63 @@ export default {
   layout: 'sidebar',
   components: {
     PageTitle,
-    TextEditor
+    'editor': VueEditor
   },
   data () {
     return {
-      text: '',
-      heading: 'Form Sejarah',
+      heading: 'Form Sejaraaaah',
       subheading: 'Anda dapat merubah deskripsi Sejarah BPR DP Taspen pada form di bawah ini',
       icon: 'pe-7s-car icon-gradient bg-warm-flame',
       sejarah: '',
-      editorConfig: {
-        // The configuration of the editor.
-        // removePlugins: [ 'Heading', 'Link', 'Image' ]
-        toolbar: [
-          'heading',
-          'bold',
-          'italic',
-          'bulletedList',
-          'numberedList',
-          'blockQuote',
-          'undo',
-          'redo'
-        ]
-      }
+      customToolbar: [
+        [{ font: [] }],
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [
+          { align: '' },
+          { align: 'center' },
+          { align: 'right' },
+          { align: 'justify' }
+        ],
+        [{ header: 1 }, { header: 2 }],
+        ['blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+        [{ script: 'sub' }, { script: 'super' }],
+        [{ indent: '-1' }, { indent: '+1' }]
+        // [{ color: [] }, { background: [] }],
+        // ['link', 'image', 'video', 'formula'],
+        // [{ direction: 'rtl' }],
+        // ['clean']
+      ]
     }
   },
+  mounted () {
+    this.getSejarah()
+  },
   methods: {
-    save (e) {
-      e.preventDefault()
-      console.log(this.text)
+    async onSubmit (evt) {
+      evt.preventDefault()
+      const sejarah = this.sejarah
+      if (confirm('Anda Yakin?')) {
+        await axios.post('https://bprtaspen.com/api/profil/sejarah/edit', { sejarah })
+          .then((res) => {
+            alert('sukses edit sejarah')
+          }).catch(err => alert('gagal tambah sejarah', err))
+      }
+    },
+
+    async getSejarah () {
+      await axios.get('https://bprtaspen.com/api/profil/sejarah')
+        .then((res) => {
+          this.sejarah = res.data.sejarah.sejarah
+        })
+        .catch(err => alert('gagal fetch sejarah', err))
     }
   }
 }
 </script>
+<style scoped>
+#myeditor {
+  background-color: white;
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-  <editor id="myeditor" v-model="editorText" :options="editorOptions" height="500px" />
+  <editor id="myeditor" :value="editorText" :options="editorOptions" height="500px" />
 </template>
 <script>
 import 'tui-editor/dist/tui-editor.css'
@@ -11,9 +11,16 @@ export default {
   components: {
     'editor': Editor
   },
+  props: {
+    editorText: {
+      type: String,
+      required: false,
+      default: ''
+    }
+  },
   data () {
     return {
-      editorText: '',
+      // editorText: '',
       editorOptions: {
         toolbarItems: [
           'heading',

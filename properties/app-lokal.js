@@ -9,7 +9,10 @@ const appLokalProperties = {
     // profil
     GBP: '/api/profil/gbp',
     EDIT_GBP_IMAGE: '/api/profil/edit-image',
-    EDIT_GBP_CABANG: '/api/profil/edit-cabang'
+    EDIT_GBP_CABANG: '/api/profil/edit-cabang',
+    // produk
+    DEPOSITO: '/api/produk/add-deposito',
+    EDIT_DEPOSITO: '/api/produk/edit-deposito'
   },
   TASPEN: {
     BASE: 'http://localhost:8081'

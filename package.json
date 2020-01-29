@@ -39,7 +39,8 @@
     "vue-fragment": "^1.5.1",
     "vue-perfect-scrollbar": "^0.2.1",
     "vue-sidebar-menu": "^4.4.4",
-    "vue-sweetalert2": "^3.0.1"
+    "vue-sweetalert2": "^3.0.1",
+    "vue2-editor": "^2.10.2"
   },
   "devDependencies": {
     "@nuxtjs/eslint-config": "^1.0.1",

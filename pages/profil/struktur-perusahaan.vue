@@ -2,7 +2,7 @@
   <fragment>
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="row">
-      <div class="col-sm-12 col-lg-6">
+      <div class="col-sm-12 col-lg-12">
         <div class="card-hover-shadow-2x mb-3 card">
           <div class="card-header-tab card-header">
             <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
@@ -20,7 +20,7 @@
                         <div class="widget-content-left mr-3">
                           <div class="widget-content-left">
                             <img
-                              width="100"
+                              width="600"
                               class="rounded"
                               :src="imgStruktur.imageUrl"
                               :alt="imgStruktur.label">
@@ -30,7 +30,7 @@
                           <div class="col-lg-6">
                             <div class="position-relative form-group">
                               <label for="struktur" class="">Rubah Foto</label>
-                              <input id="struktur" name="struktur" placeholder="struktur" type="file" class="form-control border-0">
+                              <input id="struktur" name="struktur" placeholder="struktur" type="file" class="form-control border-0 pt-1">
                             </div>
                           </div>
                           <div class="col-lg-4">
@@ -60,7 +60,13 @@
       </div>
       <!-- <b-form @submit="onSubmit">
         Pilih gambar :
-        <input type="file" name="file" ref="filesih" id="filesCarousel" class="form-control" @change="handleFilesUpload" />
+        <input
+          id="filesCarousel"
+          ref="filesih"
+          type="file"
+          name="file"
+          class="form-control"
+          @change="handleFilesUpload">
         <br>
         <button type="submit" class="btn btn-info" value="Upload" id="btn_upload">Upload</button>
       </b-form> -->

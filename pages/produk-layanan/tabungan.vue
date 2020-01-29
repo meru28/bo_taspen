@@ -1,49 +1,85 @@
 <template>
   <fragment>
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
-    <div class="content">
-      <b-row>
-        <b-col md="12">
-          <b-card class="mb-3" no-body>
-            <b-tabs pills card>
-              <b-tab title="Tabungan Pensiun" active>
-                <div class="position-relative row form-group">
-                  <div class="col-sm-10">
-                    <ckeditor v-model="tabunganPensiun" type="classic" :config="editorConfig" />
+    <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
+      <li class="nav-item">
+        <a
+          id="tab-0"
+          role="tab"
+          class="nav-link active"
+          data-toggle="tab"
+          href="#tabPensiun"
+          @click="getTabunganPensiun">
+          <span>Tabungan Pensiun</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a
+          id="tab-1"
+          role="tab"
+          class="nav-link"
+          data-toggle="tab"
+          href="#tabUmum"
+          @click="getTabunganUmum">
+          <span>Tabungan Umum</span>
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content">
+      <div id="tabPensiun" class="tab-pane tabs-animation fade show active" role="tabpanel">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="main-card mb-3 card">
+              <div class="card-header">
+                <i class="header-icon lnr-license icon-gradient bg-plum-plate" />Tabungan Pensiun
+              </div>
+              <div class="card-body">
+                <div class="tab-content">
+                  <div id="tab-eg1-0" class="tab-pane active" role="tabpanel">
+                    <editor id="myeditor" v-model="tabunganPensiun" :editor-toolbar="customToolbar" />
                   </div>
                 </div>
-                <div class="position-relative row form-check">
-                  <div class="col-sm-10 offset-sm-2">
-                    <button class="btn btn-primary">
-                      Simpan
-                    </button>
+              </div>
+              <div class="d-block text-right card-footer">
+                <button class="btn-wide btn btn-success" @click="onSubmitPensiun">
+                  Simpan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="tabUmum" class="tab-pane tabs-animation fade" role="tabpanel">
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="main-card mb-3 card">
+              <div class="card-header">
+                <i class="header-icon lnr-license icon-gradient bg-plum-plate" />Tabungan Umum
+              </div>
+              <div class="card-body">
+                <div class="tab-content">
+                  <div id="tab-eg1-0" class="tab-pane active" role="tabpanel">
+                    <editor id="myeditor" v-model="tabunganUmum" :editor-toolbar="customToolbar" />
                   </div>
                 </div>
-              </b-tab>
-              <b-tab title="Tabungan Umum">
-                <div class="position-relative row form-group">
-                  <div class="col-sm-10">
-                    <ckeditor v-model="tabunganUmum" type="classic" :config="editorConfig" />
-                  </div>
-                </div>
-                <div class="position-relative row form-check">
-                  <div class="col-sm-10 offset-sm-2">
-                    <button class="btn btn-primary">
-                      Simpan
-                    </button>
-                  </div>
-                </div>
-              </b-tab>
-            </b-tabs>
-          </b-card>
-        </b-col>
-      </b-row>
+              </div>
+              <div class="d-block text-right card-footer">
+                <button class="btn-wide btn btn-success" @click="onSubmitUmum">
+                  Simpan
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </fragment>
 </template>
 <script>
 import Vue from 'vue'
 import Fragment from 'vue-fragment'
+import { VueEditor } from 'vue2-editor'
+import axios from 'axios'
 import PageTitle from '~/components/_base/PageTitle'
 
 Vue.use(Fragment.Plugin)
@@ -51,7 +87,8 @@ export default {
   name: 'Tabungan',
   layout: 'sidebar',
   components: {
-    PageTitle
+    PageTitle,
+    'editor': VueEditor
   },
   data () {
     return {
@@ -60,20 +97,67 @@ export default {
       icon: 'pe-7s-cash icon-gradient bg-plum-plate',
       tabunganPensiun: '',
       tabunganUmum: '',
-      editorConfig: {
-        // The configuration of the editor.
-        // removePlugins: [ 'Heading', 'Link', 'Image' ]
-        toolbar: [
-          'heading',
-          'bold',
-          'italic',
-          'bulletedList',
-          'numberedList',
-          'blockQuote',
-          'undo',
-          'redo'
-        ]
+      customToolbar: [
+        [{ font: [] }],
+        [{ header: [false, 1, 2, 3, 4, 5, 6] }],
+        ['bold', 'italic', 'underline', 'strike'],
+        [
+          { align: '' },
+          { align: 'center' },
+          { align: 'right' },
+          { align: 'justify' }
+        ],
+        [{ header: 1 }, { header: 2 }],
+        ['blockquote'],
+        [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
+        [{ script: 'sub' }, { script: 'super' }],
+        [{ indent: '-1' }, { indent: '+1' }]
+        // [{ color: [] }, { background: [] }],
+        // ['link', 'image', 'video', 'formula'],
+        // [{ direction: 'rtl' }],
+        // ['clean']
+      ]
+    }
+  },
+  mounted () {
+    this.getTabunganPensiun()
+  },
+  methods: {
+    async onSubmitPensiun (evt) {
+      evt.preventDefault()
+      const tabunganPensiun = this.tabunganPensiun
+      if (confirm('Anda Yakin?')) {
+        await axios.post('https://bprtaspen.com/api/produk/tabungan/edit-tabungan-pensiun', { tabunganPensiun })
+          .then((res) => {
+            alert('sukses tambah tabungan pensiun')
+            window.location.reload()
+          }).catch(err => alert('gagal edit tabungan pensiun', err))
       }
+    },
+    async onSubmitUmum (evt) {
+      evt.preventDefault()
+      const tabunganUmum = this.tabunganUmum
+      if (confirm('Anda Yakin?')) {
+        await axios.post('https://bprtaspen.com/api/produk/tabungan/edit-tabungan-umum', { tabunganUmum })
+          .then((res) => {
+            alert('sukses tambah tabungan umum')
+            window.location.reload()
+          }).catch(err => alert('gagal edit tabungan umum', err))
+      }
+    },
+    async getTabunganPensiun () {
+      await axios.get('https://bprtaspen.com/api/produk/tabungan-pensiun')
+        .then((res) => {
+          this.tabunganPensiun = res.data.tabungan.tabunganPensiun
+        })
+        .catch(err => alert('gagal fetch tabungan pensiun', err))
+    },
+    async getTabunganUmum () {
+      await axios.get('https://bprtaspen.com/api/produk/tabungan-umum')
+        .then((res) => {
+          this.tabunganUmum = res.data.tabungan.tabunganUmum
+        })
+        .catch(err => alert('gagal fetch tabungan umum', err))
     }
   }
 }
