@@ -10,7 +10,7 @@
           data-toggle="tab"
           href="#tabPensiun"
           @click="getKreditUsahaPensiun">
-          <span>Kredit Usaha Pensiun</span>
+          <span>Kredit Pensiun ASN</span>
         </a>
       </li>
       <li class="nav-item">
@@ -21,7 +21,7 @@
           data-toggle="tab"
           href="#tabUmum"
           @click="getKreditUsaha">
-          <span>Kredit Usaha</span>
+          <span>Kredit Pegawai Aktif</span>
         </a>
       </li>
     </ul>
@@ -31,7 +31,7 @@
           <div class="col-lg-12">
             <div class="main-card mb-3 card">
               <div class="card-header">
-                <i class="header-icon lnr-license icon-gradient bg-plum-plate" />Kredit Usaha Pensiun
+                <i class="header-icon lnr-license icon-gradient bg-plum-plate" />Kredit Pensiun ASN
               </div>
               <div class="card-body">
                 <div class="tab-content">
@@ -54,7 +54,7 @@
           <div class="col-lg-12">
             <div class="main-card mb-3 card">
               <div class="card-header">
-                <i class="header-icon lnr-license icon-gradient bg-plum-plate" />Kredit Pensiun
+                <i class="header-icon lnr-license icon-gradient bg-plum-plate" />Kredit Pegawai Aktif
               </div>
               <div class="card-body">
                 <div class="tab-content">
