@@ -9,6 +9,16 @@
               <i class="header-icon lnr-database icon-gradient bg-malibu-beach" />Edit Struktur Perusahaan
             </div>
           </div>
+          <div v-show="message !== ''" id="toast-container" class="toast-bottom-left">
+            <div class="toast toast-error" aria-live="assertive" style="">
+              <div class="toast-title">
+                Perhatian!
+              </div>
+              <div class="toast-message">
+                {{ message }}
+              </div>
+            </div>
+          </div>
           <div class="card-hover-shadow-2x mb-3 card">
             <div class="scroll-area-lg">
               <VuePerfectScrollbar class="scrollbar-container">
@@ -30,12 +40,20 @@
                           <div class="col-lg-6">
                             <div class="position-relative form-group">
                               <label for="struktur" class="">Rubah Foto</label>
-                              <input id="struktur" name="struktur" placeholder="struktur" type="file" class="form-control border-0 pt-1">
+                              <input
+                                id="struktur"
+                                ref="filesih"
+                                name="struktur"
+                                placeholder="struktur"
+                                type="file"
+                                class="form-control border-0 pt-1"
+                                @focus="resetError"
+                                @change="handleFilesUpload">
                             </div>
                           </div>
                           <div class="col-lg-4">
                             <div class="widget-content-left pt-4">
-                              <button class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
+                              <button :disabled="message !== ''" class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
                                 <font-awesome-icon icon="check" /> Simpan
                               </button>
                               <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem">
@@ -110,7 +128,8 @@ export default {
       icon: 'pe-7s-display2 icon-gradient bg-plum-plate',
       selectedEditImage: false,
       imgStruktur: {},
-      editImgStruktur: []
+      editImgStruktur: [],
+      message: ''
     }
   },
   mounted () {
@@ -119,10 +138,23 @@ export default {
   methods: {
     editItem () {
       this.selectedEditImage = !this.selectedEditImage
+      this.resetError()
     },
 
     handleFilesUpload () {
-      this.editImgStruktur = this.$refs.filesih.files
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/JPG', 'image/JPEG', 'image/PNG']
+      const file = this.$refs.filesih.files[0]
+      if (!allowedTypes.includes(file.type)) {
+        this.message = 'Pastikan file bertipe jpeg, jpg, atau png'
+      } if (file.size > 500000) {
+        this.message = 'File Anda terlalu besar, maksimal adalah 500KB'
+      } else {
+        this.editImgStruktur = file
+      }
+    },
+
+    resetError () {
+      this.message = ''
     },
 
     async getStruktur () {

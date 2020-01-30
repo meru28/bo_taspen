@@ -9,6 +9,16 @@
             Galeri Carousel
           </h5>
           <!-- </div> -->
+          <div v-show="message !== ''" id="toast-container" class="toast-bottom-left">
+            <div class="toast toast-error" aria-live="assertive" style="">
+              <div class="toast-title">
+                Perhatian!
+              </div>
+              <div class="toast-message">
+                {{ message }}
+              </div>
+            </div>
+          </div>
           <div class="card-hover-shadow-2x mb-3 card">
             <div class="scroll-area-lg">
               <VuePerfectScrollbar class="scrollbar-container">
@@ -94,12 +104,13 @@
                     type="file"
                     name="file"
                     class="form-control border-0"
+                    @focus="resetError"
                     @change="handleFilesUpload">
                 </div>
               </div>
               <div class="col-lg-2">
                 <div class="widget-content-right pt-4">
-                  <button id="btn_upload" type="submit" class="btn btn-info" value="Upload">
+                  <button id="btn_upload" :disabled="message !== ''" type="submit" class="btn btn-info" value="Upload">
                     Upload
                   </button>
                 </div>
@@ -156,7 +167,8 @@ export default {
       selectedEditId: '',
       imgCarousel: [],
       editImgCarousel: [],
-      selected: []
+      selected: [],
+      message: ''
     }
   },
   mounted () {
@@ -165,10 +177,23 @@ export default {
   methods: {
     editItem (id) {
       this.selectedEditId = id
+      this.resetError()
     },
 
     handleFilesUpload (id) {
-      this.editImgCarousel = this.$refs.filesCarousel.files
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/JPG', 'image/JPEG', 'image/PNG']
+      const file = this.$refs.filesCarousel.files[0]
+      if (!allowedTypes.includes(file.type)) {
+        this.message = 'Pastikan file bertipe jpeg, jpg, atau png'
+      } if (file.size > 500000) {
+        this.message = 'File Anda terlalu besar, maksimal adalah 500KB'
+      } else {
+        this.editImgCarousel = file
+      }
+    },
+
+    resetError () {
+      this.message = ''
     },
 
     getIdCarousel (_id) {
