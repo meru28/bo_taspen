@@ -78,9 +78,10 @@ export default {
       evt.preventDefault()
       const layanan = this.layanan
       if (confirm('Anda Yakin?')) {
-        await axios.post('https://bprtaspen/api/produk/edit-layanan', { layanan })
+        await axios.post('https://bprtaspen.com/api/produk/edit-layanan', { layanan })
           .then((res) => {
             alert('sukses edit layanan')
+            window.location.reload()
           }).catch(err => alert('gagal edit layanan', err))
       }
     },

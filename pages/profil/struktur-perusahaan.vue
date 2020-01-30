@@ -68,7 +68,9 @@
           class="form-control"
           @change="handleFilesUpload">
         <br>
-        <button type="submit" class="btn btn-info" value="Upload" id="btn_upload">Upload</button>
+        <button id="btn_upload" type="submit" class="btn btn-info" value="Upload">
+          Upload
+        </button>
       </b-form> -->
     </div>
   </fragment>
