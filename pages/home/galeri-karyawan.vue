@@ -160,8 +160,13 @@ export default {
   methods: {
     editItem (id) {
       this.selectedEditId = id
-      this.imgEmployee.find(obj => obj._id === id.toString())
-      // console.log('coba ::', this.selectedEditId)
+      if (this.selectedEditId !== 0) {
+        // console.log(this.selectedEditId)
+        // console.log('masuk boy')
+        const ids = this.imgEmployee.find(obj => obj._id === id.toString())
+        this.labelEmp = ids.label
+        // console.log(ids)
+      }
     },
 
     async employee () {

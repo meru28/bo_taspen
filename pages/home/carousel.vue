@@ -183,12 +183,14 @@ export default {
     handleFilesUpload (id) {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/JPG', 'image/JPEG', 'image/PNG']
       const file = this.$refs.filesCarousel.files[0]
+      console.log('isi file', file)
       if (!allowedTypes.includes(file.type)) {
         this.message = 'Pastikan file bertipe jpeg, jpg, atau png'
-      } if (file.size > 500000) {
-        this.message = 'File Anda terlalu besar, maksimal adalah 500KB'
+      } else if (file.size > 3000000) {
+        this.message = 'File Anda terlalu besar, maksimal adalah 3MB'
       } else {
         this.editImgCarousel = file
+        // console.log('edit img carousel ::', this.editImgCarousel)
       }
     },
 
@@ -210,12 +212,12 @@ export default {
 
     async onSubmit (evt) {
       evt.preventDefault()
-      if (this.editImgCarousel[0] !== undefined) {
+      if (this.editImgCarousel) {
         const formData = new FormData()
-        formData.append('pictCarousel', this.editImgCarousel[0])
-        for (const value of formData.values()) {
-          console.log('isi fd ::', value)
-        }
+        formData.append('pictCarousel', this.editImgCarousel)
+        // for (const value of formData.values()) {
+        //   console.log('isi fd ::', value)
+        // }
         await addImageCarousel(formData)
           .then((res) => {
             alert('sukses')

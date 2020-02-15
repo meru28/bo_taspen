@@ -10,7 +10,8 @@ const date = new Date()
 instance.interceptors.request.use(
   (config) => {
     console.log(
-      'request api' +
+      properties.TASPEN.BASE +
+      ' request api' +
       config.url +
       'start at' +
       date.getMinutes()
