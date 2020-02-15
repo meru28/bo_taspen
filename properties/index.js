@@ -5,10 +5,10 @@ import appLokalProduction from './app-lokal'
 let properties
 
 if (process.env.MODE_ENV === 'lokal') {
-  console.log('masuk lokal')
+  // console.log('masuk lokal')
   properties = appLokalProduction
 } else {
-  console.log('masuk production')
+  // console.log('masuk production')
   properties = appProductionProperties
 }
 

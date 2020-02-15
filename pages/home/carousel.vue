@@ -183,7 +183,7 @@ export default {
     handleFilesUpload (id) {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/JPG', 'image/JPEG', 'image/PNG']
       const file = this.$refs.filesCarousel.files[0]
-      console.log('isi file', file)
+      // console.log('isi file', file)
       if (!allowedTypes.includes(file.type)) {
         this.message = 'Pastikan file bertipe jpeg, jpg, atau png'
       } else if (file.size > 3000000) {
@@ -255,7 +255,7 @@ export default {
       await deleteCarousel(this.selectedEditId)
         .then((res) => {
           alert('sukses hapus image')
-          // window.location.reload()
+          window.location.reload()
         }).catch(err => alert('gagal hapus image', err))
     }
   }
