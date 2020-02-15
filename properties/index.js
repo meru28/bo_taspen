@@ -6,10 +6,10 @@ let properties
 
 if (process.env.MODE_ENV === 'production') {
   console.log('masuk production')
-  properties = appProductionProperties
-} else {
-  console.log('masuk lokal')
   properties = appLokalProduction
+} else {
+  properties = appProductionProperties
+  console.log('masuk lokal')
 }
 
 export default properties
