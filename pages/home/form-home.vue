@@ -1,5 +1,10 @@
 <template>
   <fragment>
+    <Loading
+      :active.sync="isLoading"
+      color="#0f4c75"
+      :can-cancel="true"
+      :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="content">
       <div class="main-card mb-3 card">
@@ -11,7 +16,13 @@
             <div class="position-relative row form-group">
               <label for="judulBeranda" class="col-sm-2 col-form-label">Judul Beranda</label>
               <div class="col-sm-10">
-                <input id="judulBeranda" v-model="titleTaspen" name="judul" placeholder="judul beranda" type="text" class="form-control">
+                <input
+                  id="judulBeranda"
+                  v-model="titleTaspen"
+                  class="form-control"
+                  name="judul"
+                  placeholder="judul beranda"
+                  type="text">
               </div>
             </div>
             <div class="position-relative row form-group">
@@ -29,32 +40,62 @@
             <div class="position-relative row form-group">
               <label for="jangkaWaktu" class="col-sm-2 col-form-label">Jangka Waktu</label>
               <div class="col-sm-10">
-                <input id="jangkaWaktu" v-model="jangkaWaktu" name="jangkaWaktu" placeholder="jangka waktu" type="text" class="form-control">
+                <input
+                  id="jangkaWaktu"
+                  v-model="jangkaWaktu"
+                  class="form-control"
+                  name="jangkaWaktu"
+                  placeholder="jangka waktu"
+                  type="text">
               </div>
             </div>
             <div class="position-relative row form-group">
               <label for="sukuBunga" class="col-sm-2 col-form-label">Suku Bunga</label>
               <div class="col-sm-10">
-                <input id="sukuBunga" v-model="sukuBunga" name="sukuBunga" placeholder="suku bunga" type="text" class="form-control">
+                <input
+                  id="sukuBunga"
+                  v-model="sukuBunga"
+                  class="form-control"
+                  name="sukuBunga"
+                  placeholder="suku bunga"
+                  type="text">
               </div>
             </div>
             <div class="form-row">
               <div class="col-md-4">
                 <div class="position-relative form-group">
                   <label for="nasabah" class="">Nasabah</label>
-                  <input id="nasabah" v-model="dataNasabah.nasabah" name="nasabah" placeholder="jumlah nasabah" type="text" class="form-control">
+                  <input
+                    id="nasabah"
+                    v-model="dataNasabah.nasabah"
+                    class="form-control"
+                    name="nasabah"
+                    placeholder="jumlah nasabah"
+                    type="text">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="position-relative form-group">
                   <label for="deposit" class="">Deposit</label>
-                  <input id="deposit" v-model="dataNasabah.deposit" name="deposit" placeholder="jumlah deposito" type="text" class="form-control">
+                  <input
+                    id="deposit"
+                    v-model="dataNasabah.deposit"
+                    class="form-control"
+                    name="deposit"
+                    placeholder="jumlah deposito"
+                    type="text">
                 </div>
               </div>
               <div class="col-md-4">
                 <div class="position-relative form-group">
                   <label for="kredit" class="">Kredit</label>
-                  <input id="kredit" v-model="dataNasabah.kredit" name="kredit" placeholder="jumlah kreditur" type="text" class="form-control">
+                  <input
+                    id="kredit"
+                    v-model="dataNasabah.kredit"
+                    class="form-control"
+                    name="kredit"
+                    placeholder="jumlah kreditur"
+                    type="text">
                 </div>
               </div>
             </div>
@@ -87,6 +128,9 @@
 import Vue from 'vue'
 import Fragment from 'vue-fragment'
 import axios from 'axios'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 import PageTitle from '~/components/_base/PageTitle'
 
 Vue.use(Fragment.Plugin)
@@ -94,8 +138,10 @@ Vue.use(Fragment.Plugin)
 export default {
   name: 'FormHome',
   layout: 'sidebar',
+  middleware: ['check-auth', 'auth'],
   components: {
-    PageTitle
+    PageTitle,
+    Loading
   },
   data () {
     return {
@@ -111,7 +157,9 @@ export default {
         deposit: 0,
         kredit: 0
       },
-      bprDescription: ''
+      bprDescription: '',
+      isLoading: false,
+      fullPage: true
     }
   },
   mounted () {
@@ -119,9 +167,10 @@ export default {
   },
   methods: {
     async getHome () {
+      this.isLoading = true
       await axios.get('https://bprtaspen.com/api/home')
         .then((res) => {
-          console.log('test home', res.data.home)
+          this.isLoading = false
           this.titleTaspen = res.data.home.titleTaspen
           this.periode = res.data.home.periode
           this.jangkaWaktu = res.data.home.jangkaWaktu
@@ -141,10 +190,12 @@ export default {
       const sukuBunga = this.sukuBunga
       const dataNasabah = this.dataNasabah
       const bprDescription = this.bprDescription
+      this.isLoading = true
       await axios.post('https://bprtaspen.com/api/home/edit', {
         titleTaspen, periode, jangkaWaktu, sukuBunga, dataNasabah, bprDescription
       })
         .then((res) => {
+          this.isLoading = false
           console.log('sukses update home')
           alert('sukses update home')
           window.location.reload()

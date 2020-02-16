@@ -1,5 +1,10 @@
 <template>
   <fragment>
+    <Loading
+      :active.sync="isLoading"
+      :can-cancel="true"
+      color="#0f4c75"
+      :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="content">
       <div class="main-card mb-3 card">
@@ -32,15 +37,20 @@ import Vue from 'vue'
 import Fragment from 'vue-fragment'
 import { VueEditor } from 'vue2-editor'
 import axios from 'axios'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 import PageTitle from '~/components/_base/PageTitle'
 
 Vue.use(Fragment.Plugin)
 export default {
   name: 'Sejarah',
   layout: 'sidebar',
+  middleware: ['check-auth', 'auth'],
   components: {
     PageTitle,
-    'editor': VueEditor
+    'editor': VueEditor,
+    Loading
   },
   data () {
     return {
@@ -48,6 +58,8 @@ export default {
       subheading: 'Anda dapat merubah deskripsi Sejarah BPR DP Taspen pada form di bawah ini',
       icon: 'pe-7s-car icon-gradient bg-warm-flame',
       sejarah: '',
+      isLoading: false,
+      fullPage: true,
       customToolbar: [
         [{ font: [] }],
         [{ header: [false, 1, 2, 3, 4, 5, 6] }],
@@ -86,8 +98,11 @@ export default {
     },
 
     async getSejarah () {
+      this.isLoading = true
+
       await axios.get('https://bprtaspen.com/api/profil/sejarah')
         .then((res) => {
+          this.isLoading = false
           this.sejarah = res.data.sejarah.sejarah
         })
         .catch(err => alert('gagal fetch sejarah', err))

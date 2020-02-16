@@ -1,5 +1,10 @@
 <template>
   <fragment>
+    <Loading
+      :active.sync="isLoading"
+      :can-cancel="true"
+      color="#0f4c75"
+      :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="content">
       <div class="main-card mb-3 card">
@@ -60,6 +65,9 @@ import Fragment from 'vue-fragment'
 import axios from 'axios'
 import { JSDOM } from 'jsdom'
 // import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faTrashAlt,
@@ -86,8 +94,10 @@ Vue.use(Fragment.Plugin)
 export default {
   name: 'GaleriVideoBank',
   layout: 'sidebar',
+  middleware: ['check-auth', 'auth'],
   components: {
-    PageTitle
+    PageTitle,
+    Loading
     // VuePerfectScrollbar,
     // 'font-awesome-icon': FontAwesomeIcon
   },
@@ -98,7 +108,9 @@ export default {
       icon: 'pe-7s-mouse icon-gradient bg-love-kiss',
       imgGaleriBank: [],
       videoTaspen: '',
-      hiddenSource: ''
+      hiddenSource: '',
+      isLoading: false,
+      fullPage: true
     }
   },
   mounted () {
@@ -110,8 +122,10 @@ export default {
     },
 
     async getInfoBank () {
+      this.isLoading = true
       await axios.get('https://bprtaspen.com/api/info-bank')
         .then((res) => {
+          this.isLoading = false
           console.log('info bank', res)
           this.hiddenSource = res.data.infoBank.videoTaspen
         }).catch(err => console.log('gagal fetch info bank', err))
@@ -119,6 +133,7 @@ export default {
 
     async onSubmit (evt) {
       evt.preventDefault()
+      this.isLoading = true
       const source = this.getSourceYt()
       const formData = new FormData()
       const headers = {
@@ -126,23 +141,28 @@ export default {
       }
       toFormData(formData, this.imgGaleriBank, 'pictInfoBank')
       formData.append('videoTaspen', JSON.stringify(source))
-      for (const value of formData.values()) {
-        console.log('isi fd ::', value)
-      }
+      // for (const value of formData.values()) {
+      //   console.log('isi fd ::', value)
+      // }
       console.log('form data', formData)
       await axios.post('https://bprtaspen.com/api/info-bank/add', formData, headers)
-        .then(res => alert('sukses tambah video'))
+        .then((res) => {
+          this.isLoading = false
+          alert('sukses tambah video')
+        })
         .catch(err => console.log('sukses video error :', err))
     },
 
     async onSubmitEdit (evt) {
       evt.preventDefault()
+      this.isLoading = true
       const source = this.getSourceYt()
       // console.log('test', source)
       await axios.post('https://bprtaspen.com/api/info-bank/video', {
         source
       })
         .then((res) => {
+          this.isLoading = false
           alert('sukses edit img video bank')
           window.location.reload()
         })

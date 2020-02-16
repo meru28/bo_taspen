@@ -25,6 +25,7 @@
 
 <script>
 export default {
-  layout: 'sidebar'
+  layout: 'sidebar',
+  middleware: ['check-auth', 'auth']
 }
 </script>

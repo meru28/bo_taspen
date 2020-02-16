@@ -123,7 +123,7 @@
               Galeri Info Bank
             </router-link>
           </li>
-          <li class="app-sidebar__heading">
+          <!-- <li class="app-sidebar__heading">
             Inbox
           </li>
           <li>
@@ -131,7 +131,7 @@
               <i class="metismenu-icon pe-7s-mail" />
               Kotak Saran
             </router-link>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>

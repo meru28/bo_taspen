@@ -115,7 +115,9 @@ import PageTitle from '~/components/_base/PageTitle.vue'
 library.add(faTrashAlt, faCheck, faAngleDown, faAngleUp, faTh, faCalendarAlt)
 
 export default {
+  name: 'Gbp',
   layout: 'sidebar',
+  middleware: ['check-auth', 'auth'],
   components: {
     PageTitle,
     VuePerfectScrollbar,

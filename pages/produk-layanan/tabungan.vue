@@ -1,5 +1,10 @@
 <template>
   <fragment>
+    <Loading
+      :active.sync="isLoading"
+      :can-cancel="true"
+      color="#0f4c75"
+      :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
       <li class="nav-item">
@@ -80,15 +85,20 @@ import Vue from 'vue'
 import Fragment from 'vue-fragment'
 import { VueEditor } from 'vue2-editor'
 import axios from 'axios'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 import PageTitle from '~/components/_base/PageTitle'
 
 Vue.use(Fragment.Plugin)
 export default {
   name: 'Tabungan',
   layout: 'sidebar',
+  middleware: ['check-auth', 'auth'],
   components: {
     PageTitle,
-    'editor': VueEditor
+    'editor': VueEditor,
+    Loading
   },
   data () {
     return {
@@ -97,6 +107,8 @@ export default {
       icon: 'pe-7s-cash icon-gradient bg-plum-plate',
       tabunganPensiun: '',
       tabunganUmum: '',
+      isLoading: false,
+      fullPage: true,
       customToolbar: [
         [{ font: [] }],
         [{ header: [false, 1, 2, 3, 4, 5, 6] }],
@@ -125,10 +137,12 @@ export default {
   methods: {
     async onSubmitPensiun (evt) {
       evt.preventDefault()
+      this.isLoading = true
       const tabunganPensiun = this.tabunganPensiun
       if (confirm('Anda Yakin?')) {
         await axios.post('https://bprtaspen.com/api/produk/tabungan/edit-tabungan-pensiun', { tabunganPensiun })
           .then((res) => {
+            this.isLoading = false
             alert('sukses tambah tabungan pensiun')
             window.location.reload()
           }).catch(err => alert('gagal edit tabungan pensiun', err))
@@ -136,25 +150,31 @@ export default {
     },
     async onSubmitUmum (evt) {
       evt.preventDefault()
+      this.isLoading = true
       const tabunganUmum = this.tabunganUmum
       if (confirm('Anda Yakin?')) {
         await axios.post('https://bprtaspen.com/api/produk/tabungan/edit-tabungan-umum', { tabunganUmum })
           .then((res) => {
+            this.isLoading = false
             alert('sukses tambah tabungan umum')
             window.location.reload()
           }).catch(err => alert('gagal edit tabungan umum', err))
       }
     },
     async getTabunganPensiun () {
+      this.isLoading = true
       await axios.get('https://bprtaspen.com/api/produk/tabungan-pensiun')
         .then((res) => {
+          this.isLoading = false
           this.tabunganPensiun = res.data.tabungan.tabunganPensiun
         })
         .catch(err => alert('gagal fetch tabungan pensiun', err))
     },
     async getTabunganUmum () {
+      this.isLoading = true
       await axios.get('https://bprtaspen.com/api/produk/tabungan-umum')
         .then((res) => {
+          this.isLoading = false
           this.tabunganUmum = res.data.tabungan.tabunganUmum
         })
         .catch(err => alert('gagal fetch tabungan umum', err))

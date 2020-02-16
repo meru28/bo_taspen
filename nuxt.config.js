@@ -121,6 +121,9 @@ export default {
       }
     }
   },
+  env: {
+    apiKey: 'AIzaSyDRlGQt-ljfTCeKzHDWjdQznshFkiE9YDQ'
+  },
   transition: {
     name: 'fade',
     mode: 'out-in'

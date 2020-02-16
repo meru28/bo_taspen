@@ -8,13 +8,23 @@
     <div class="app-footer">
       <div class="app-footer__inner">
         <div class="app-footer-left">
-          Copyright 2019 BPR DP Taspen
+          Copyright {{ year }} BPR DP Taspen
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import Cookie from 'js-cookie'
 export default {
+  name: 'Footer',
+  data () {
+    return {
+      year: 0
+    }
+  },
+  mounted () {
+    this.year = Cookie.get('year')
+  }
 }
 </script>

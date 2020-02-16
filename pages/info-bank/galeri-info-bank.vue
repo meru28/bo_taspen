@@ -87,7 +87,7 @@ import {
   faAngleUp,
   faTh
 } from '@fortawesome/free-solid-svg-icons'
-// import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import PageTitle from '~/components/_base/PageTitle'
 import { toFormData } from '~/helpers/custom-helpers'
 
@@ -104,10 +104,11 @@ Vue.use(Fragment.Plugin)
 export default {
   name: 'GaleriInfoBank',
   layout: 'sidebar',
+  middleware: ['check-auth', 'auth'],
   components: {
     PageTitle,
-    VuePerfectScrollbar
-    // 'font-awesome-icon': FontAwesomeIcon
+    VuePerfectScrollbar,
+    'font-awesome-icon': FontAwesomeIcon
   },
   data () {
     return {
@@ -135,7 +136,7 @@ export default {
     async getInfoBank () {
       await axios.get('https://bprtaspen.com/api/info-bank')
         .then((res) => {
-          console.log('info bank', res)
+          // console.log('info bank', res)
           this.imgGaleriBank = res.data.infoBank.imageGallery
         }).catch(err => console.log('gagal fetch info bank', err))
     },

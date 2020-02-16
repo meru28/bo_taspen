@@ -1,5 +1,10 @@
 <template>
   <fragment>
+    <Loading
+      :active.sync="isLoading"
+      :can-cancel="true"
+      color="#0f4c75"
+      :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <ul class="body-tabs body-tabs-layout tabs-animated body-tabs-animated nav">
       <li class="nav-item">
@@ -80,15 +85,20 @@ import Vue from 'vue'
 import Fragment from 'vue-fragment'
 import axios from 'axios'
 import { VueEditor } from 'vue2-editor'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 import PageTitle from '~/components/_base/PageTitle'
 
 Vue.use(Fragment.Plugin)
 export default {
   name: 'Kredit',
   layout: 'sidebar',
+  middleware: ['check-auth', 'auth'],
   components: {
     PageTitle,
-    'editor': VueEditor
+    'editor': VueEditor,
+    Loading
   },
   data () {
     return {
@@ -97,6 +107,8 @@ export default {
       icon: 'pe-7s-credit icon-gradient bg-plum-plate',
       kreditUsahaPensiun: '',
       kreditUsaha: '',
+      isLoading: false,
+      fullPage: true,
       customToolbar: [
         [{ font: [] }],
         [{ header: [false, 1, 2, 3, 4, 5, 6] }],
@@ -125,10 +137,12 @@ export default {
   methods: {
     async onSubmitKup (evt) {
       evt.preventDefault()
+      this.isLoading = true
       const kreditUsahaPensiun = this.kreditUsahaPensiun
       if (confirm('Anda Yakin?')) {
         await axios.post('https://bprtaspen.com/api/produk/kredit/edit-kredit-up', { kreditUsahaPensiun })
           .then((res) => {
+            this.isLoading = false
             alert('sukses tambah kredit usaha pensiun')
             window.location.reload()
           }).catch(err => alert('gagal edit kredit usaha pensiun', err))
@@ -137,10 +151,12 @@ export default {
 
     async onSubmitKu (evt) {
       evt.preventDefault()
+      this.isLoading = true
       const kreditUsaha = this.kreditUsaha
       if (confirm('Anda Yakin?')) {
         await axios.post('https://bprtaspen.com/api/produk/kredit/edit-kredit-u', { kreditUsaha })
           .then((res) => {
+            this.isLoading = false
             alert('sukses tambah kredit usaha')
             window.location.reload()
           }).catch(err => alert('gagal edit kredit usaha', err))
@@ -148,15 +164,19 @@ export default {
     },
 
     async getKreditUsahaPensiun () {
+      this.isLoading = true
       await axios.get('https://bprtaspen.com/api/produk/kredit-up')
         .then((res) => {
+          this.isLoading = false
           this.kreditUsahaPensiun = res.data.kredit.kreditUsahaPensiun
         })
         .catch(err => alert('gagal fetch kredit usaha pensiun', err))
     },
     async getKreditUsaha () {
+      this.isLoading = true
       await axios.get('https://bprtaspen.com/api/produk/kredit-u')
         .then((res) => {
+          this.isLoading = false
           this.kreditUsaha = res.data.kredit.kreditUsaha
         })
         .catch(err => alert('gagal fetch kredit usaha', err))

@@ -1,5 +1,10 @@
 <template>
   <fragment>
+    <Loading
+      :active.sync="isLoading"
+      :can-cancel="true"
+      color="#0f4c75"
+      :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="row">
       <div class="col-lg-7 main-card mb-3 card">
@@ -112,6 +117,9 @@
 <script>
 import Vue from 'vue'
 import Fragment from 'vue-fragment'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faTrashAlt,
@@ -139,9 +147,11 @@ Vue.use(Fragment.Plugin)
 export default {
   name: 'GaleriKaryawan',
   layout: 'sidebar',
+  middleware: ['check-auth', 'auth'],
   components: {
     PageTitle,
-    'font-awesome-icon': FontAwesomeIcon
+    'font-awesome-icon': FontAwesomeIcon,
+    Loading
   },
   data () {
     return {
@@ -151,7 +161,9 @@ export default {
       selectedEditId: '',
       imgEmployee: [],
       editImgEmployee: [],
-      labelEmp: 'Edit Deskripsi Anda'
+      labelEmp: 'Edit Deskripsi Anda',
+      isLoading: false,
+      fullPage: true
     }
   },
   mounted () {
@@ -170,8 +182,10 @@ export default {
     },
 
     async employee () {
+      this.isLoading = true
       await getHome()
         .then((res) => {
+          this.isLoading = false
           this.imgEmployee = res.data.home.imageEmployee
           // const keys = Object.keys(this.imgEmployee)
           // for (const key of keys) {
@@ -185,6 +199,7 @@ export default {
 
     async onSubmitEdit (evt) {
       evt.preventDefault()
+      this.isLoading = true
       const formData = new FormData()
       if (document.getElementById('editImgEmp').files[0] !== undefined) {
         formData.append('pictEditEmployee', document.getElementById('editImgEmp').files[0])
@@ -192,6 +207,7 @@ export default {
       formData.append('labelEmp', JSON.stringify(this.labelEmp))
       await editEmployee(formData, this.selectedEditId)
         .then((res) => {
+          this.isLoading = false
           alert('sukses edit img employee Anda')
           this.selectedEditId = ''
           window.location.reload()

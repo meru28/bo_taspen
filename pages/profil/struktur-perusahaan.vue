@@ -1,5 +1,10 @@
 <template>
   <fragment>
+    <Loading
+      :active.sync="isLoading"
+      :can-cancel="true"
+      color="#0f4c75"
+      :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="row">
       <div class="col-sm-12 col-lg-12">
@@ -98,6 +103,9 @@ import Vue from 'vue'
 import Fragment from 'vue-fragment'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import axios from 'axios'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faTrashAlt,
@@ -115,11 +123,12 @@ Vue.use(Fragment.Plugin)
 export default {
   name: 'Struktur',
   layout: 'sidebar',
+  middleware: ['check-auth', 'auth'],
   components: {
     PageTitle,
     VuePerfectScrollbar,
-    'font-awesome-icon': FontAwesomeIcon
-
+    'font-awesome-icon': FontAwesomeIcon,
+    Loading
   },
   data () {
     return {
@@ -129,7 +138,9 @@ export default {
       selectedEditImage: false,
       imgStruktur: {},
       editImgStruktur: [],
-      message: ''
+      message: '',
+      isLoading: false,
+      fullPage: true
     }
   },
   mounted () {
@@ -158,8 +169,10 @@ export default {
     },
 
     async getStruktur () {
+      this.isLoading = true
       await axios.get('https://bprtaspen.com/api/profil/struktur')
         .then((res) => {
+          this.isLoading = false
           this.imgStruktur = res.data.struktur.imageStruktur
           console.log('struktur', res)
         })

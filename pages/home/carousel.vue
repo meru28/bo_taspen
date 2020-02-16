@@ -1,5 +1,10 @@
 <template>
   <fragment>
+    <Loading
+      :active.sync="isLoading"
+      color="#0f4c75"
+      :can-cancel="true"
+      :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="content">
       <div class="main-card mb-3 card">
@@ -128,6 +133,9 @@ import Vue from 'vue'
 import Fragment from 'vue-fragment'
 import Cookies from 'js-cookie'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faTrashAlt,
@@ -154,9 +162,11 @@ Vue.use(Fragment.Plugin)
 export default {
   name: 'Carousel',
   layout: 'sidebar',
+  middleware: ['check-auth', 'auth'],
   components: {
     PageTitle,
     VuePerfectScrollbar,
+    Loading,
     'font-awesome-icon': FontAwesomeIcon
   },
   data () {
@@ -168,7 +178,9 @@ export default {
       imgCarousel: [],
       editImgCarousel: [],
       selected: [],
-      message: ''
+      message: '',
+      isLoading: false,
+      fullPage: true
     }
   },
   mounted () {
@@ -204,8 +216,10 @@ export default {
     },
 
     async home () {
+      this.isLoading = true
       await getHome()
         .then((res) => {
+          this.isLoading = false
           this.imgCarousel = res.data.home.imageCarousel
         }).catch(err => console.log('gagal fetch home', err))
     },
@@ -218,8 +232,10 @@ export default {
         // for (const value of formData.values()) {
         //   console.log('isi fd ::', value)
         // }
+        this.isLoading = true
         await addImageCarousel(formData)
           .then((res) => {
+            this.isLoading = false
             alert('sukses')
             window.location.reload()
           })

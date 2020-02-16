@@ -66,7 +66,7 @@
                     role="menu"
                     aria-hidden="true"
                     class="dropdown-menu dropdown-menu-right">
-                    <button type="button" tabindex="0" class="dropdown-item">
+                    <!-- <button type="button" tabindex="0" class="dropdown-item">
                       User Account
                     </button>
                     <button type="button" tabindex="0" class="dropdown-item">
@@ -77,20 +77,20 @@
                     </h6>
                     <button type="button" tabindex="0" class="dropdown-item">
                       Actions
-                    </button>
-                    <div tabindex="-1" class="dropdown-divider" />
-                    <button type="button" tabindex="0" class="dropdown-item">
-                      Dividers
+                    </button> -->
+                    <!-- <div tabindex="-1" class="dropdown-divider" /> -->
+                    <button type="button" tabindex="0" class="dropdown-item" @click="onLogout">
+                      Logout
                     </button>
                   </div>
                 </div>
               </div>
               <div class="widget-content-left ml-3 header-user-info">
                 <div class="widget-heading">
-                  Admin BPRDP-Taspen
+                  Admin BPRDP TASPEN
                 </div>
                 <div class="widget-subheading">
-                  VP People Manager
+                  {{ userEmail }}
                 </div>
               </div>
               <!-- <div class="widget-content-right header-user-info ml-3">
@@ -110,6 +110,7 @@
 <script>
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faEllipsisV } from '@fortawesome/free-solid-svg-icons'
+import Cookie from 'js-cookie'
 // import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 // import UserArea from './HeaderUserArea'
 library.add(faEllipsisV)
@@ -122,8 +123,12 @@ export default {
   data () {
     return {
       isOpen: false,
-      isOpenMobileMenu: false
+      isOpenMobileMenu: false,
+      userEmail: ''
     }
+  },
+  mounted () {
+    this.userEmail = Cookie.get('user')
   },
   methods: {
     toggleMobile (className) {
@@ -146,6 +151,11 @@ export default {
       } else {
         el.classList.remove(className)
       }
+    },
+
+    onLogout () {
+      this.$store.dispatch('logout')
+      this.$router.push('/login')
     }
   }
 }

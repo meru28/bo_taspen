@@ -14,49 +14,40 @@
                     <!-- <span>Please sign in to your account below.</span> -->
                   </h4>
                 </div>
-                <b-form-group
-                  id="exampleInputGroup1"
-                  label-for="exampleInput1"
-                  description="We'll never share your email with anyone else.">
-                  <b-form-input
-                    id="exampleInput1"
-                    type="email"
-                    required
-                    placeholder="Enter email..." />
-                </b-form-group>
-                <b-form-group id="exampleInputGroup2" label-for="exampleInput2">
-                  <b-form-input
-                    id="exampleInput2"
-                    type="password"
-                    required
-                    placeholder="Enter password..." />
-                </b-form-group>
-                <b-form-checkbox id="exampleCheck" name="check">
-                  Keep me logged in
-                </b-form-checkbox>
-                <div class="divider" />
-                <!-- <h6 class="mb-0">
-                  No account?
-                  <a href="javascript:void(0);" class="text-primary">Sign up now</a>
-                </h6> -->
-              </div>
-              <div class="modal-footer clearfix">
-                <div class="float-left">
-                  <a href="javascript:void(0);" class="btn-lg btn btn-link">
-                    Lupa
-                    Password
-                  </a>
-                </div>
-                <div class="float-right">
-                  <b-button variant="primary" size="lg">
-                    Login to Dashboard
-                  </b-button>
-                </div>
+                <b-form v-if="!$store.state.authUser" @submit.prevent="login">
+                  <b-form-group
+                    id="exampleInputGroup1"
+                    label-for="exampleInput1"
+                    description="We'll never share your user with anyone else.">
+                    <b-form-input
+                      id="exampleInput1"
+                      v-model="formUsername"
+                      type="text"
+                      required
+                      placeholder="Enter user..." />
+                  </b-form-group>
+                  <b-form-group id="exampleInputGroup2" label-for="exampleInput2">
+                    <b-form-input
+                      id="exampleInput2"
+                      v-model="formPassword"
+                      type="password"
+                      required
+                      placeholder="Enter password..." />
+                  </b-form-group>
+                  <div class="divider" />
+                  <div class="modal-footer clearfix">
+                    <div class="float-right">
+                      <b-button variant="primary" size="lg" type="submit">
+                        Login to Dashboard
+                      </b-button>
+                    </div>
+                  </div>
+                </b-form>
               </div>
             </div>
           </div>
           <div class="text-center text-white opacity-8 mt-3">
-            Copyright &copy; BPR DP Taspen 2019
+            Copyright &copy; BPR DP Taspen {{ $store.getters.getYear }}
           </div>
         </b-col>
       </div>
@@ -65,6 +56,26 @@
 </template>
 <script>
 export default {
-  name: 'Login'
+  name: 'Login',
+  data () {
+    return {
+      formError: null,
+      formUsername: '',
+      formPassword: '',
+      token: null,
+      year: 0
+    }
+  },
+  mounted () {
+    this.$store.dispatch('getYear')
+  },
+  methods: {
+    login () {
+      this.$store.dispatch('login', {
+        email: this.formUsername,
+        password: this.formPassword
+      })
+    }
+  }
 }
 </script>
