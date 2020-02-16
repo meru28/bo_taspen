@@ -15,7 +15,8 @@ const appLokalProperties = {
     EDIT_DEPOSITO: '/api/produk/edit-deposito'
   },
   TASPEN: {
-    BASE: 'http://localhost:8081'
+    BASE: 'http://localhost:8081',
+    DASHBOARD: 'http://localhost:8082'
   }
 }
 

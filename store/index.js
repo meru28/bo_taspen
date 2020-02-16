@@ -21,6 +21,9 @@ export const mutations = {
   },
   SET_YEAR (state, year) {
     state.year = year
+  },
+  CLEAR_ERROR (state) {
+    state.error = ''
   }
 }
 
@@ -43,7 +46,7 @@ export const actions = {
       }).catch((err) => {
         console.log('gagal :', err)
         if (err.response && err.response.status === 400) {
-          commit('SET_ERROR', 'Password Salah')
+          commit('SET_ERROR', 'Email atau Password Anda salah!!')
         }
       })
     } catch (error) {
@@ -98,7 +101,7 @@ export const actions = {
       expirationDate = localStorage.getItem('tokenExpiration')
     }
     if (new Date().getTime() > +expirationDate || !token) {
-      console.log('tidak ada token || invalid token')
+      // console.log('tidak ada token || invalid token')
       dispatch('logout')
       // eslint-disable-next-line no-useless-return
       commit('CLEAR_TOKEN')
@@ -114,5 +117,6 @@ export const getters = {
   isAuthenticated (state) {
     return state.authToken !== null
   },
-  getYear: state => state.year
+  getYear: state => state.year,
+  getError: state => state.error
 }

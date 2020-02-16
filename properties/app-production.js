@@ -15,7 +15,8 @@ const appProductionProperties = {
     EDIT_DEPOSITO: '/api/produk/edit-deposito'
   },
   TASPEN: {
-    BASE: 'https://bprtaspen.com'
+    BASE: 'https://bprtaspen.com',
+    DASHBOARD: 'https://dashboard.bprtaspen.com'
   }
 }
 

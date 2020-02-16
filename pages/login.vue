@@ -17,14 +17,15 @@
                 <b-form v-if="!$store.state.authUser" @submit.prevent="login">
                   <b-form-group
                     id="exampleInputGroup1"
-                    label-for="exampleInput1"
-                    description="We'll never share your user with anyone else.">
+                    label-for="exampleInput1">
+                    <!-- description="We'll never share your user with anyone else."> -->
                     <b-form-input
                       id="exampleInput1"
                       v-model="formUsername"
-                      type="text"
+                      type="email"
                       required
-                      placeholder="Enter user..." />
+                      placeholder="Email Anda..."
+                      @focus="onFocusChange" />
                   </b-form-group>
                   <b-form-group id="exampleInputGroup2" label-for="exampleInput2">
                     <b-form-input
@@ -32,8 +33,12 @@
                       v-model="formPassword"
                       type="password"
                       required
-                      placeholder="Enter password..." />
+                      placeholder="Password..."
+                      @focus="onFocusChange" />
                   </b-form-group>
+                  <template v-show="errorMessage">
+                    <span style="color: red">{{ errorMessage }}</span>
+                  </template>
                   <div class="divider" />
                   <div class="modal-footer clearfix">
                     <div class="float-right">
@@ -59,11 +64,16 @@ export default {
   name: 'Login',
   data () {
     return {
-      formError: null,
       formUsername: '',
       formPassword: '',
       token: null,
-      year: 0
+      year: 0,
+      deactivate: false
+    }
+  },
+  computed: {
+    errorMessage () {
+      return this.$store.getters.getError
     }
   },
   mounted () {
@@ -75,6 +85,10 @@ export default {
         email: this.formUsername,
         password: this.formPassword
       })
+    },
+
+    onFocusChange () {
+      this.$store.commit('CLEAR_ERROR')
     }
   }
 }
