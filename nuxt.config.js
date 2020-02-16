@@ -63,6 +63,7 @@ export default {
     // Doc: https://bootstrap-vue.js.org
     'bootstrap-vue/nuxt',
     '@nuxtjs/axios',
+    '@nuxtjs/dotenv',
     '@nuxtjs/style-resources',
     '@nuxtjs/router',
     [
