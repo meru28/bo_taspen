@@ -9,7 +9,7 @@ if (process.env.MODE_ENV === 'lokal') {
   properties = appProductionProperties
 } else {
   properties = appLokalProduction
-  // console.log('masuk production')
+  console.log('masuk production')
 }
 
 export default properties
