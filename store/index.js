@@ -4,7 +4,8 @@ export const state = () => ({
   authUser: null,
   authToken: null,
   error: '',
-  year: 0
+  year: 0,
+  idImage: ''
 })
 
 export const mutations = {
@@ -24,6 +25,10 @@ export const mutations = {
   },
   CLEAR_ERROR (state) {
     state.error = ''
+  },
+  SET_ID_IMAGE (state, idImage) {
+    console.log('cek id image', idImage)
+    state.idImage = idImage
   }
 }
 
@@ -118,5 +123,6 @@ export const getters = {
     return state.authToken !== null
   },
   getYear: state => state.year,
-  getError: state => state.error
+  getError: state => state.error,
+  getIdImage: state => state.idImage
 }

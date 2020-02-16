@@ -131,7 +131,6 @@
 <script>
 import Vue from 'vue'
 import Fragment from 'vue-fragment'
-import Cookies from 'js-cookie'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import Loading from 'vue-loading-overlay'
 // Import stylesheet
@@ -212,7 +211,7 @@ export default {
 
     getIdCarousel (_id) {
       // this.testId = document.querySelector('.custom-control-input:checked').value
-      Cookies.set('id', _id)
+      this.$store.commit('SET_ID_IMAGE', _id)
     },
 
     async home () {

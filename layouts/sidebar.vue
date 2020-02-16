@@ -18,7 +18,6 @@
   </div>
 </template>
 <script>
-import Cookies from 'js-cookie'
 import Header from '~/components/Header/Header'
 import Sidebar from '~/components/Sidebar/Sidebar'
 import Footer from '~/components/Footer/Footer'
@@ -36,18 +35,18 @@ export default {
       idImg: ''
     }
   },
-  mounted () {
-    if (Cookies.get('id')) {
-      this.idImg = Cookies.get('id')
+  computed: {
+    idImage () {
+      return this.$store.getters.getIdImage
     }
   },
   methods: {
     async onDeleteImage () {
-      await deleteCarousel(this.idImg)
+      await deleteCarousel(this.idImage)
         .then((res) => {
-          Object.keys(Cookies.get()).forEach((id) => {
-            Cookies.remove('id')
-          })
+          // Object.keys(Cookies.get()).forEach((id) => {
+          //   Cookies.remove('id')
+          // })
           alert('sukses hapus image')
           window.location.reload()
         }).catch(err => alert('gagal hapus image', err))
