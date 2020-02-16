@@ -1,5 +1,10 @@
 <template>
   <fragment>
+    <Loading
+      :active.sync="isLoading"
+      color="#0f4c75"
+      :can-cancel="true"
+      :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="row">
       <div class="col-sm-12 col-lg-6">
@@ -27,7 +32,7 @@
                           </div>
                         </div>
                         <fragment v-if="selectedEditId === img._id">
-                          <b-form @submit="onSubmitEdit">
+                          <b-form ref="formContainer" @submit="onSubmitEdit">
                             <div class="col-sm-5">
                               <div class="position-relative form-group">
                                 <label for="deskripsi" class="">Rubah Foto</label>
@@ -77,6 +82,9 @@
 import Vue from 'vue'
 import Fragment from 'vue-fragment'
 import axios from 'axios'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
@@ -108,7 +116,8 @@ export default {
   components: {
     PageTitle,
     VuePerfectScrollbar,
-    'font-awesome-icon': FontAwesomeIcon
+    'font-awesome-icon': FontAwesomeIcon,
+    Loading
   },
   data () {
     return {
@@ -117,7 +126,9 @@ export default {
       icon: 'pe-7s-mouse icon-gradient bg-plum-plate',
       selectedEditId: '',
       imgGaleriBank: [],
-      editImgGaleriBank: []
+      editImgGaleriBank: [],
+      isLoading: false,
+      fullPage: true
     }
   },
   mounted () {
@@ -134,8 +145,10 @@ export default {
     },
 
     async getInfoBank () {
+      this.isLoading = true
       await axios.get('https://bprtaspen.com/api/info-bank')
         .then((res) => {
+          this.isLoading = false
           // console.log('info bank', res)
           this.imgGaleriBank = res.data.infoBank.imageGallery
         }).catch(err => console.log('gagal fetch info bank', err))
@@ -143,16 +156,20 @@ export default {
 
     async onSubmit (evt) {
       evt.preventDefault()
+      this.isLoading = true
       const formData = new FormData()
       const headers = {
         headers: { 'Content-Type': 'multipart/form-data' }
       }
       toFormData(formData, this.imgGaleriBank, 'pictInfoBank')
-      for (const value of formData.values()) {
-        console.log('isi fd ::', value)
-      }
+      // for (const value of formData.values()) {
+      //   console.log('isi fd ::', value)
+      // }
       await axios.post('https://bprtaspen.com/api/info-bank', formData, headers)
-        .then(res => alert('sukses update video'))
+        .then((res) => {
+          this.isLoading = false
+          alert('sukses update video')
+        })
         .catch(err => console.log('update video error :', err))
     },
 

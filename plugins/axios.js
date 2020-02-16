@@ -12,7 +12,7 @@ instance.interceptors.request.use(
     console.log(
       ' request api' +
       config.url +
-      'start at' +
+      'start at ' +
       date.getMinutes()
     )
     return config
@@ -25,7 +25,7 @@ instance.interceptors.request.use(
 instance.interceptors.response.use(
   (response) => {
     console.log(
-      'response api end at' +
+      'response api end at ' +
       date.getMinutes()
     )
     return response

@@ -4,7 +4,7 @@ import appProductionProperties from './app-production'
 let properties
 
 if (process.env.MODE_ENV === 'lokal') {
-  console.log('lokal')
+  // console.log('lokal')
   properties = appLokalProduction
 } else {
   properties = appProductionProperties

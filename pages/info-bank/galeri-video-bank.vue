@@ -126,7 +126,7 @@ export default {
       await axios.get('https://bprtaspen.com/api/info-bank')
         .then((res) => {
           this.isLoading = false
-          console.log('info bank', res)
+          // console.log('info bank', res)
           this.hiddenSource = res.data.infoBank.videoTaspen
         }).catch(err => console.log('gagal fetch info bank', err))
     },
@@ -144,7 +144,7 @@ export default {
       // for (const value of formData.values()) {
       //   console.log('isi fd ::', value)
       // }
-      console.log('form data', formData)
+      // console.log('form data', formData)
       await axios.post('https://bprtaspen.com/api/info-bank/add', formData, headers)
         .then((res) => {
           this.isLoading = false
