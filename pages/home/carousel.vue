@@ -145,7 +145,7 @@ import {
   faTh
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { getHome, addImageCarousel, editCarousel, deleteCarousel } from '~/api/home'
+import { getHome, addImageCarousel, editCarousel } from '~/api/home'
 import PageTitle from '~/components/_base/PageTitle'
 
 library.add(
@@ -178,8 +178,13 @@ export default {
       editImgCarousel: [],
       selected: [],
       message: '',
-      isLoading: false,
+      // isLoading: false,
       fullPage: true
+    }
+  },
+  computed: {
+    isLoading () {
+      return this.$store.getters.getLoading
     }
   },
   mounted () {
@@ -215,10 +220,12 @@ export default {
     },
 
     async home () {
-      this.isLoading = true
+      this.$store.commit('SET_LOADING', true)
+      // this.isLoading = true
       await getHome()
         .then((res) => {
-          this.isLoading = false
+          // this.isLoading = false
+          this.$store.commit('SET_LOADING', false)
           this.imgCarousel = res.data.home.imageCarousel
         }).catch(err => console.log('gagal fetch home', err))
     },
@@ -231,10 +238,12 @@ export default {
         // for (const value of formData.values()) {
         //   console.log('isi fd ::', value)
         // }
-        this.isLoading = true
+        // this.isLoading = true
+        this.$store.commit('SET_LOADING', true)
         await addImageCarousel(formData)
           .then((res) => {
-            this.isLoading = false
+            // this.isLoading = false
+            this.$store.commit('SET_LOADING', false)
             alert('sukses')
             window.location.reload()
           })
@@ -248,13 +257,15 @@ export default {
     async onSubmitEdit (evt) {
       if (document.getElementById('editImage').files[0] !== undefined) {
         evt.preventDefault()
+        this.$store.commit('SET_LOADING', true)
         const formData = new FormData()
         formData.append('pictEditCarousel', document.getElementById('editImage').files[0])
-        for (const value of formData.values()) {
-          console.log('isi fd ::', value)
-        }
+        // for (const value of formData.values()) {
+        //   console.log('isi fd ::', value)
+        // }
         await editCarousel(formData, this.selectedEditId)
           .then((res) => {
+            this.$store.commit('SET_LOADING', false)
             alert('sukses edit img carousel')
             this.selectedEditId = ''
             window.location.reload()
@@ -264,15 +275,14 @@ export default {
         evt.preventDefault()
         alert('Anda belum memilih gambar pengganti!')
       }
-    },
-
-    async onDeleteImage () {
-      await deleteCarousel(this.selectedEditId)
-        .then((res) => {
-          alert('sukses hapus image')
-          window.location.reload()
-        }).catch(err => alert('gagal hapus image', err))
     }
+    // async onDeleteImage () {
+    //   await deleteCarousel(this.selectedEditId)
+    //     .then((res) => {
+    //       alert('sukses hapus image')
+    //       window.location.reload()
+    //     }).catch(err => alert('gagal hapus image', err))
+    // }
   }
 }
 </script>

@@ -42,8 +42,10 @@ export default {
   },
   methods: {
     async onDeleteImage () {
+      this.$store.commit('SET_LOADING', true)
       await deleteCarousel(this.idImage)
         .then((res) => {
+          this.$store.commit('SET_LOADING', false)
           // Object.keys(Cookies.get()).forEach((id) => {
           //   Cookies.remove('id')
           // })
