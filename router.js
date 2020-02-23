@@ -6,6 +6,8 @@ import Login from '~/pages/login'
 import Carousel from '~/pages/home/carousel'
 import FormHome from '~/pages/home/form-home'
 import GaleriKaryawan from '~/pages/home/galeri-karyawan'
+import GaleriCabang from '~/pages/home/galeri-cabang'
+import AddImage from '~/pages/home/addImage'
 import Gbp from '~/pages/profil/gbp'
 import Sejarah from '~/pages/profil/sejarah'
 import Struktur from '~/pages/profil/struktur-perusahaan'
@@ -48,6 +50,19 @@ export function createRouter () {
         path: '/galeri-karyawan',
         component: GaleriKaryawan,
         name: 'GaleriKaryawan'
+      },
+      {
+        path: '/galeri-cabang',
+        component: GaleriCabang,
+        name: 'GaleriCabang'
+      },
+      {
+        path: '/tambah-foto',
+        component: AddImage,
+        name: 'TambahFoto',
+        props: route => ({
+          params: route.params
+        })
       },
       {
         path: '/gbp',

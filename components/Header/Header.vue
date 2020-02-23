@@ -66,19 +66,19 @@
                     role="menu"
                     aria-hidden="true"
                     class="dropdown-menu dropdown-menu-right">
-                    <!-- <button type="button" tabindex="0" class="dropdown-item">
+                    <button type="button" tabindex="0" class="dropdown-item">
                       User Account
                     </button>
                     <button type="button" tabindex="0" class="dropdown-item">
-                      Settings
+                      Change Password
                     </button>
-                    <h6 tabindex="-1" class="dropdown-header">
+                    <!-- <h6 tabindex="-1" class="dropdown-header">
                       Header
-                    </h6>
-                    <button type="button" tabindex="0" class="dropdown-item">
+                    </h6> -->
+                    <!-- <button type="button" tabindex="0" class="dropdown-item">
                       Actions
                     </button> -->
-                    <!-- <div tabindex="-1" class="dropdown-divider" /> -->
+                    <div tabindex="-1" class="dropdown-divider" />
                     <button type="button" tabindex="0" class="dropdown-item" @click="onLogout">
                       Logout
                     </button>

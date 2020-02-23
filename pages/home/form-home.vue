@@ -8,7 +8,7 @@
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="content">
       <div class="main-card mb-3 card">
-        <div class="card-body">
+        <div class="card-body" style="height : 630px">
           <h5 class="card-title">
             Beranda
           </h5>
@@ -108,7 +108,7 @@
             <div class="position-relative row form-group">
               <label for="bprDeskripsi" class="col-sm-2 col-form-label">Deskripsi BPR DP Taspen :</label>
               <div class="col-sm-10">
-                <textarea id="bprDeskripsi" v-model="bprDescription" name="text" class="form-control" />
+                <textarea id="bprDeskripsi" v-model="bprDescription" name="text" class="form-control" style="height : 200px" />
               </div>
             </div>
             <div class="position-relative row form-check">

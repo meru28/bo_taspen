@@ -25,78 +25,76 @@
             </div>
           </div>
           <div class="card-hover-shadow-2x mb-3 card">
-            <div class="scroll-area-lg">
-              <VuePerfectScrollbar class="scrollbar-container">
-                <ul class="todo-list-wrapper list-group list-group-flush">
-                  <li v-for="(carousel, idx) in imgCarousel" :key="carousel._id" class="list-group-item">
-                    <div class="todo-indicator bg-info" />
-                    <div class="widget-content p-0">
-                      <div class="widget-content-wrapper">
-                        <div class="widget-content-left mr-2">
-                          <div class="custom-checkbox custom-control">
-                            <!-- <input
-                              :id="carousel._id"
-                              v-model="selected"
-                              type="checkbox"
-                              :value="carousel._id"
-                              class="custom-control-input"> -->
-                            <p>{{ idx+1 }}</p>
-                            <!-- <label
-                              class="custom-control-label"
-                              for="exampleCustomCheckbox2">&nbsp;</label> -->
-                          </div>
+            <VuePerfectScrollbar class="scrollbar-container">
+              <ul class="todo-list-wrapper list-group list-group-flush">
+                <li v-for="(carousel, idx) in imgCarousel" :key="carousel._id" class="list-group-item">
+                  <div class="todo-indicator bg-info" />
+                  <div class="widget-content p-0">
+                    <div class="widget-content-wrapper">
+                      <div class="widget-content-left mr-2">
+                        <div class="custom-checkbox custom-control">
+                          <!-- <input
+                            :id="carousel._id"
+                            v-model="selected"
+                            type="checkbox"
+                            :value="carousel._id"
+                            class="custom-control-input"> -->
+                          <p>{{ idx+1 }}</p>
+                          <!-- <label
+                            class="custom-control-label"
+                            for="exampleCustomCheckbox2">&nbsp;</label> -->
                         </div>
-                        <div class="widget-content-left mr-3">
-                          <div class="widget-content-left">
-                            <img
-                              width="100"
-                              class="rounded"
-                              :src="carousel.imageUrl"
-                              alt="">
-                          </div>
-                        </div>
-                        <fragment v-if="selectedEditId === carousel._id">
-                          <b-form @submit="onSubmitEdit">
-                            <div class="form-row w-100">
-                              <div class="col-lg-7">
-                                <div class="position-relative form-group">
-                                  <label for="deskripsi" class="">Rubah Foto</label>
-                                  <input id="editImage" type="file" name="file" class="form-control border-0">
-                                </div>
-                              </div>
-                              <div class="col-lg-5">
-                                <div class="widget-content-left pt-4">
-                                  <button class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
-                                    <font-awesome-icon icon="check" /> Simpan
-                                  </button>
-                                  <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem(0)">
-                                    <font-awesome-icon icon="trash-alt" /> Batal
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          </b-form>
-                        </fragment>
-                        <fragment v-else>
-                          <div class="form-row w-100">
-                            <div class="col-lg-4">
-                              <div class="d-flex height-100 pt-2">
-                                <button class="border-0 btn-transition btn btn-info" @click="editItem(carousel._id)">
-                                  Edit Foto
-                                </button>
-                                <button class="border-0 btn-transition btn btn-outline-danger" data-toggle="modal" data-target="#myModal" @click="getIdCarousel(carousel._id)">
-                                  <font-awesome-icon icon="trash-alt" /> Hapus
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        </fragment>
                       </div>
+                      <div class="widget-content-left mr-3">
+                        <div class="widget-content-left">
+                          <img
+                            width="100"
+                            class="rounded"
+                            :src="carousel.imageUrl"
+                            alt="">
+                        </div>
+                      </div>
+                      <fragment v-if="selectedEditId === carousel._id">
+                        <b-form @submit="onSubmitEdit">
+                          <div class="form-row w-100">
+                            <div class="col-lg-7">
+                              <div class="position-relative form-group">
+                                <label for="deskripsi" class="">Rubah Foto</label>
+                                <input id="editImage" type="file" name="file" class="form-control border-0">
+                              </div>
+                            </div>
+                            <div class="col-lg-5">
+                              <div class="widget-content-left pt-4">
+                                <button class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
+                                  <font-awesome-icon icon="check" /> Simpan
+                                </button>
+                                <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem(0)">
+                                  <font-awesome-icon icon="trash-alt" /> Batal
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </b-form>
+                      </fragment>
+                      <fragment v-else>
+                        <div class="form-row w-100">
+                          <div class="col-lg-4">
+                            <div class="d-flex height-100 pt-2">
+                              <button class="border-0 btn-transition btn btn-info" @click="editItem(carousel._id)">
+                                Edit Foto
+                              </button>
+                              <button class="border-0 btn-transition btn btn-outline-danger" data-toggle="modal" data-target="#myModal" @click="getIdCarousel(carousel._id)">
+                                <font-awesome-icon icon="trash-alt" /> Hapus
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </fragment>
                     </div>
-                  </li>
-                </ul>
-              </VuePerfectScrollbar>
-            </div>
+                  </div>
+                </li>
+              </ul>
+            </VuePerfectScrollbar>
           </div>
           <b-form @submit="onSubmit">
             <div class="form-row w-100">

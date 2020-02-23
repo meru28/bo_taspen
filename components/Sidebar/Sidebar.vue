@@ -55,7 +55,7 @@
             </router-link>
           </li>
           <li>
-            <router-link to="/galeri-karyawan">
+            <router-link to="/galeri-cabang">
               <i class="metismenu-icon pe-7s-culture" />
               Galeri Kantor Cabang
             </router-link>

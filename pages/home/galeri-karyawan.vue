@@ -7,13 +7,13 @@
       :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="row">
-      <div class="col-lg-7 main-card mb-3 card">
+      <div class="col-12 main-card mb-3 card">
         <div class="card-body">
           <h5 class="card-title">
             Daftar Galeri Karyawan
           </h5>
           <div class="card-hover-shadow-2x mb-3 card">
-            <div class="scroll-area-lg">
+            <div class="scroll-area-lg" style="height : 415px">
               <ul class="todo-list-wrapper list-group list-group-flush">
                 <li v-for="(emp) in imgEmployee" :key="emp._id" class="list-group-item">
                   <div class="todo-indicator bg-info" />
@@ -22,7 +22,7 @@
                       <div class="widget-content-left mr-3">
                         <div class="widget-content-left">
                           <img
-                            width="100"
+                            width="200"
                             class="rounded"
                             :src="emp.imageUrl"
                             alt="">
@@ -40,7 +40,13 @@
                             <div class="col-lg-5">
                               <div class="position-relative form-group">
                                 <label for="deskripsi" class="">Judul Deskripsi</label>
-                                <textarea id="editDesEmp" v-model="labelEmp" name="employeeDeskripsi" type="text" class="form-control" />
+                                <textarea
+                                  id="editDesEmp"
+                                  v-model="labelEmp"
+                                  name="employeeDeskripsi"
+                                  type="text"
+                                  class="form-control"
+                                  style="height : 100px" />
                               </div>
                             </div>
                             <div class="col-lg-3">

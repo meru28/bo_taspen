@@ -7,70 +7,92 @@
       :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="row">
-      <div class="col-sm-12 col-lg-6">
-        <div class="card-hover-shadow-2x mb-3 card">
+      <div class="col-12">
+        <div class="card-hover-shadow-2x mb-3 card" style="overflowY:scroll">
           <div class="card-header-tab card-header">
             <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
               <i class="header-icon lnr-database icon-gradient bg-malibu-beach" />Daftar Galeri Info Bank
             </div>
           </div>
           <div class="card-hover-shadow-2x mb-3 card">
-            <div class="scroll-area-lg">
-              <VuePerfectScrollbar class="scrollbar-container">
-                <ul class="todo-list-wrapper list-group list-group-flush">
-                  <li v-for="(img) in imgGaleriBank" :key="img._id" class="list-group-item">
-                    <div class="todo-indicator bg-info" />
-                    <div class="widget-content p-0">
-                      <div class="widget-content-wrapper">
-                        <div class="widget-content-left mr-3">
-                          <div class="widget-content-left">
-                            <img
-                              width="100"
-                              class="rounded"
-                              :src="img.imageUrl"
-                              alt="">
-                          </div>
+            <b-form class="py-4 mb-4 border-bottom" @submit="onSubmit">
+              <div class="form-row w-100">
+                <div class="col-lg-7">
+                  <div class="position-relative form-group">
+                    <label for="judulBeranda" class="col-sm-2 col-form-label" style="display: inline">Tambah Gambar</label>
+                    <input
+                      id="filesCarousel"
+                      ref="filesCarousel"
+                      type="file"
+                      name="file"
+                      class="form-control border-0">
+                  </div>
+                </div>
+                <div class="col-lg-2">
+                  <div class="widget-content-right pt-4">
+                    <button id="btn_upload" :disabled="message !== ''" type="submit" class="btn btn-info" value="Upload">
+                      Upload
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </b-form>
+            <!-- <div class="scroll-area-lg"> -->
+            <VuePerfectScrollbar class="scrollbar-container">
+              <ul class="todo-list-wrapper list-group list-group-flush">
+                <li v-for="(img) in imgGaleriBank" :key="img._id" class="list-group-item">
+                  <div class="todo-indicator bg-info" />
+                  <div class="widget-content p-0">
+                    <div class="widget-content-wrapper">
+                      <div class="widget-content-left mr-3">
+                        <div class="widget-content-left">
+                          <img
+                            width="100"
+                            class="rounded"
+                            :src="img.imageUrl"
+                            alt="">
                         </div>
-                        <fragment v-if="selectedEditId === img._id">
-                          <b-form ref="formContainer" @submit="onSubmitEdit">
-                            <div class="col-sm-5">
-                              <div class="position-relative form-group">
-                                <label for="deskripsi" class="">Rubah Foto</label>
-                                <input
-                                  id="editImage"
-                                  type="file"
-                                  name="file"
-                                  class="form-control">
-                              </div>
-                            </div>
-                            <div class="col-lg-3">
-                              <div class="widget-content-left pt-3">
-                                <button class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
-                                  <font-awesome-icon icon="check" /> Simpan
-                                </button>
-                                <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem(0)">
-                                  <font-awesome-icon icon="trash-alt" /> Batal
-                                </button>
-                              </div>
-                            </div>
-                          </b-form>
-                        </fragment>
-                        <fragment v-else>
-                          <div class="widget-content-left">
-                            <button class="border-0 btn-transition btn btn-info" @click="editItem(img._id)">
-                              Edit Foto
-                            </button>
-                            <button class="border-0 btn-transition btn btn-outline-danger" @click="onDeleteImage(img._id)">
-                              <font-awesome-icon icon="trash-alt" /> Hapus
-                            </button>
-                          </div>
-                        </fragment>
                       </div>
+                      <fragment v-if="selectedEditId === img._id">
+                        <b-form ref="formContainer" class="w-100" @submit="onSubmitEdit">
+                          <div class="col-sm-5">
+                            <div class="position-relative form-group">
+                              <label for="deskripsi" class="">Rubah Foto</label>
+                              <input
+                                id="editImage"
+                                type="file"
+                                name="file"
+                                class="form-control">
+                            </div>
+                          </div>
+                          <div class="col-lg-3">
+                            <div class="widget-content-left pt-3">
+                              <button class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
+                                <font-awesome-icon icon="check" /> Simpan
+                              </button>
+                              <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem(0)">
+                                <font-awesome-icon icon="trash-alt" /> Batal
+                              </button>
+                            </div>
+                          </div>
+                        </b-form>
+                      </fragment>
+                      <fragment v-else>
+                        <div class="widget-content-left">
+                          <button class="border-0 btn-transition btn btn-info" @click="editItem(img._id)">
+                            Edit Foto
+                          </button>
+                          <button class="border-0 btn-transition btn btn-outline-danger" @click="onDeleteImage(img._id)">
+                            <font-awesome-icon icon="trash-alt" /> Hapus
+                          </button>
+                        </div>
+                      </fragment>
                     </div>
-                  </li>
-                </ul>
-              </VuePerfectScrollbar>
-            </div>
+                  </div>
+                </li>
+              </ul>
+            </VuePerfectScrollbar>
+            <!-- </div> -->
           </div>
         </div>
       </div>

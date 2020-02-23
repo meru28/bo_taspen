@@ -25,59 +25,59 @@
             </div>
           </div>
           <div class="card-hover-shadow-2x mb-3 card">
-            <div class="scroll-area-lg">
-              <VuePerfectScrollbar class="scrollbar-container">
-                <ul class="todo-list-wrapper list-group list-group-flush">
-                  <li class="list-group-item">
-                    <div class="todo-indicator bg-info" />
-                    <div class="widget-content p-0">
-                      <div class="widget-content-wrapper">
-                        <div class="widget-content-left mr-3">
-                          <div class="widget-content-left">
-                            <img
-                              width="600"
-                              class="rounded"
-                              :src="imgStruktur.imageUrl"
-                              :alt="imgStruktur.label">
-                          </div>
-                        </div>
-                        <div v-if="selectedEditImage === true" class="form-row w-100">
-                          <div class="col-lg-6">
-                            <div class="position-relative form-group">
-                              <label for="struktur" class="">Rubah Foto</label>
-                              <input
-                                id="struktur"
-                                ref="filesih"
-                                name="struktur"
-                                placeholder="struktur"
-                                type="file"
-                                class="form-control border-0 pt-1"
-                                @focus="resetError"
-                                @change="handleFilesUpload">
-                            </div>
-                          </div>
-                          <div class="col-lg-4">
-                            <div class="widget-content-left pt-4">
-                              <button :disabled="message !== ''" class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
-                                <font-awesome-icon icon="check" /> Simpan
-                              </button>
-                              <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem">
-                                <font-awesome-icon icon="trash-alt" /> Batal
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                        <div v-else class="widget-content-left">
-                          <button class="border-0 btn-transition btn btn-info" @click="editItem">
-                            Edit
-                          </button>
+            <!-- <div class="scroll-area-lg"> -->
+            <VuePerfectScrollbar class="scrollbar-container">
+              <ul class="todo-list-wrapper list-group list-group-flush">
+                <li class="list-group-item">
+                  <div class="todo-indicator bg-info" />
+                  <div class="widget-content p-0">
+                    <div class="widget-content-wrapper">
+                      <div class="widget-content-left mr-3">
+                        <div class="widget-content-left">
+                          <img
+                            width="600"
+                            class="rounded"
+                            :src="imgStruktur.imageUrl"
+                            :alt="imgStruktur.label">
                         </div>
                       </div>
+                      <div v-if="selectedEditImage === true" class="form-row w-100">
+                        <div class="col-lg-6">
+                          <div class="position-relative form-group">
+                            <label for="struktur" class="">Rubah Foto</label>
+                            <input
+                              id="struktur"
+                              ref="filesih"
+                              name="struktur"
+                              placeholder="struktur"
+                              type="file"
+                              class="form-control border-0 pt-1"
+                              @focus="resetError"
+                              @change="handleFilesUpload">
+                          </div>
+                        </div>
+                        <div class="col-lg-4">
+                          <div class="widget-content-left pt-4">
+                            <button :disabled="message !== ''" class="border-0 btn-transition btn btn-success" @click="onSubmitEdit">
+                              <font-awesome-icon icon="check" /> Simpan
+                            </button>
+                            <button class="border-0 btn-transition btn btn-outline-danger" @click="editItem">
+                              <font-awesome-icon icon="trash-alt" /> Batal
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-else class="widget-content-left">
+                        <button class="border-0 btn-transition btn btn-info" @click="editItem">
+                          Edit
+                        </button>
+                      </div>
                     </div>
-                  </li>
-                </ul>
-              </VuePerfectScrollbar>
-            </div>
+                  </div>
+                </li>
+              </ul>
+            </VuePerfectScrollbar>
+            <!-- </div> -->
           </div>
         </div>
       </div>
@@ -185,9 +185,9 @@ export default {
         headers: { 'Content-Type': 'multipart/form-data' }
       }
       formData.append('pictStruktur', this.editImgStruktur[0])
-      for (const value of formData.values()) {
-        console.log('isi fd ::', value)
-      }
+      // for (const value of formData.values()) {
+      //   console.log('isi fd ::', value)
+      // }
       await axios.post('https://bprtaspen.com/api/profil/struktur/add', formData, headers)
         .then((res) => {
           alert('sukses')
