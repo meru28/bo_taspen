@@ -38,12 +38,15 @@ export default {
   computed: {
     idImage () {
       return this.$store.getters.getIdImage
+    },
+    fromPage () {
+      return this.$store.getters.getFromPage
     }
   },
   methods: {
     async onDeleteImage () {
       this.$store.commit('SET_LOADING', true)
-      await deleteCarousel(this.idImage)
+      await deleteCarousel(this.idImage, this.fromPage)
         .then((res) => {
           this.$store.commit('SET_LOADING', false)
           // Object.keys(Cookies.get()).forEach((id) => {

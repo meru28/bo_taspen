@@ -8,24 +8,22 @@
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="row">
       <div class="col-12 main-card mb-3 card">
-        <div class="card-body">
+        <div class="card-body" style="height: 630px">
           <h5 class="card-title">
             Daftar Galeri Kantor Cabang
           </h5>
-          <div class="card-hover-shadow-2x mb-3 card">
-            <div class="scroll-area-lg" style="height : 415px">
-              <!-- <b-form class="py-4 mb-4 border-bottom"> -->
-              <div class="py-4 mb-4 form-row w-100 border-bottom">
-                <div class="col">
-                  <div class="widget-content-right">
-                    <label for="judulBeranda" class="col-sm-2 col-form-label" style="display: inline">Tambah Gambar</label>
-                    <button id="btn_upload" class="btn btn-info" @click="redirect">
-                      Tambah
-                    </button>
-                  </div>
-                </div>
+          <div class="py-4 mb-4 form-row w-100 border-bottom">
+            <div class="col">
+              <div class="widget-content-right">
+                <label for="judulBeranda" class="col-sm-2 col-form-label" style="display: inline">Tambah Gambar</label>
+                <button id="btn_upload" class="btn btn-info" @click="redirect">
+                  Tambah
+                </button>
               </div>
-              <!-- </b-form> -->
+            </div>
+          </div>
+          <div class="card-hover-shadow-2x mb-3 card">
+            <div class="scroll-area-lg" style="height: 415px">
               <ul class="todo-list-wrapper list-group list-group-flush">
                 <li v-for="(emp) in imgEmployee" :key="emp._id" class="list-group-item">
                   <div class="todo-indicator bg-info" />
@@ -79,10 +77,16 @@
                           <div class="widget-heading">
                             {{ emp.label }}
                           </div>
+                          <div class="widget-subheading">
+                            {{ emp.alamatCabang }}
+                          </div>
                         </div>
                         <div class="col-2">
-                          <button class="border-0 btn-transition btn btn-info" @click="editItem(emp._id)">
+                          <!-- <button class="border-0 btn-transition btn btn-info" @click="editItem(emp._id)">
                             Edit
+                          </button> -->
+                          <button class="border-0 btn-transition btn btn-outline-danger" data-toggle="modal" data-target="#myModal" @click="onDeleteImage(emp._id)">
+                            <font-awesome-icon icon="trash-alt" /> Hapus
                           </button>
                         </div>
                       </template>
@@ -169,12 +173,17 @@ export default {
       this.$router.push('/tambah-foto')
     },
 
+    onDeleteImage (id) {
+      this.$store.commit('SET_ID_IMAGE', id)
+      this.$store.commit('SET_FROM_PAGE', this.$router.history.current.name)
+    },
+
     async employee () {
       this.isLoading = true
       await getHome()
         .then((res) => {
           this.isLoading = false
-          this.imgEmployee = res.data.home.imageEmployee
+          this.imgEmployee = res.data.home.imageCabang
           // const keys = Object.keys(this.imgEmployee)
           // for (const key of keys) {
           //   console.log('test :', key.length)

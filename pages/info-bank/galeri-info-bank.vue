@@ -7,38 +7,23 @@
       :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="row">
-      <div class="col-12">
-        <div class="card-hover-shadow-2x mb-3 card" style="overflowY:scroll">
-          <div class="card-header-tab card-header">
-            <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-              <i class="header-icon lnr-database icon-gradient bg-malibu-beach" />Daftar Galeri Info Bank
+      <div class="col-12 main-card mb-3 card">
+        <div class="card-body" style="height: 630px">
+          <h5 class="card-title">
+            Daftar Galeri Info Bank
+          </h5>
+          <div class="py-4 mb-4 form-row w-100 border-bottom">
+            <div class="col">
+              <div class="widget-content-right">
+                <label for="judulBeranda" class="col-sm-2 col-form-label" style="display: inline">Tambah Gambar</label>
+                <button id="btn_upload" class="btn btn-info" @click="redirect">
+                  Tambah
+                </button>
+              </div>
             </div>
           </div>
           <div class="card-hover-shadow-2x mb-3 card">
-            <b-form class="py-4 mb-4 border-bottom" @submit="onSubmit">
-              <div class="form-row w-100">
-                <div class="col-lg-7">
-                  <div class="position-relative form-group">
-                    <label for="judulBeranda" class="col-sm-2 col-form-label" style="display: inline">Tambah Gambar</label>
-                    <input
-                      id="filesCarousel"
-                      ref="filesCarousel"
-                      type="file"
-                      name="file"
-                      class="form-control border-0">
-                  </div>
-                </div>
-                <div class="col-lg-2">
-                  <div class="widget-content-right pt-4">
-                    <button id="btn_upload" :disabled="message !== ''" type="submit" class="btn btn-info" value="Upload">
-                      Upload
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </b-form>
-            <!-- <div class="scroll-area-lg"> -->
-            <VuePerfectScrollbar class="scrollbar-container">
+            <div class="scroll-area-lg">
               <ul class="todo-list-wrapper list-group list-group-flush">
                 <li v-for="(img) in imgGaleriBank" :key="img._id" class="list-group-item">
                   <div class="todo-indicator bg-info" />
@@ -79,10 +64,10 @@
                       </fragment>
                       <fragment v-else>
                         <div class="widget-content-left">
-                          <button class="border-0 btn-transition btn btn-info" @click="editItem(img._id)">
+                          <!-- <button class="border-0 btn-transition btn btn-info" @click="editItem(img._id)">
                             Edit Foto
-                          </button>
-                          <button class="border-0 btn-transition btn btn-outline-danger" @click="onDeleteImage(img._id)">
+                          </button> -->
+                          <button class="border-0 btn-transition btn btn-outline-danger" data-toggle="modal" data-target="#myModal" @click="onDeleteImage(img._id)">
                             <font-awesome-icon icon="trash-alt" /> Hapus
                           </button>
                         </div>
@@ -91,8 +76,7 @@
                   </div>
                 </li>
               </ul>
-            </VuePerfectScrollbar>
-            <!-- </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -107,7 +91,6 @@ import axios from 'axios'
 import Loading from 'vue-loading-overlay'
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css'
-import VuePerfectScrollbar from 'vue-perfect-scrollbar'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faTrashAlt,
@@ -137,7 +120,6 @@ export default {
   middleware: ['check-auth', 'auth'],
   components: {
     PageTitle,
-    VuePerfectScrollbar,
     'font-awesome-icon': FontAwesomeIcon,
     Loading
   },
@@ -164,6 +146,15 @@ export default {
 
     handleFilesUpload () {
       this.imgGaleriBank = this.$refs.filesInfoBank.files
+    },
+
+    redirect () {
+      this.$router.push('/tambah-info-bank')
+    },
+
+    onDeleteImage (id) {
+      this.$store.commit('SET_ID_IMAGE', id)
+      this.$store.commit('SET_FROM_PAGE', this.$router.history.current.name)
     },
 
     async getInfoBank () {

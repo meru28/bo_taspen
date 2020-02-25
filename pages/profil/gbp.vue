@@ -19,14 +19,23 @@
                   <div class="widget-content-wrapper">
                     <div class="widget-content-left mr-3">
                       <div class="widget-content-left">
-                        <img width="100" class="rounded" src="@/assets/images/avatars/1.jpg" alt>
+                        <img id="imgGbp" width="100" class="rounded" :src="imageSource" alt>
                       </div>
                     </div>
                     <div v-if="selectedEditImage === true" class="form-row w-100">
                       <div class="col-lg-4">
                         <div class="position-relative form-group">
-                          <label for="deskripsi" class="">Rubah Foto</label>
-                          <input id="deskripsi" name="city" placeholder="deskripsi" type="file" class="form-control border-0">
+                          <label for="rubahFoto" class="">Rubah Foto</label>
+                          <input
+                            id="gantiFoto"
+                            ref="filesImgGbp"
+                            name="foto"
+                            placeholder="ganti foto"
+                            type="file"
+                            multiple
+                            accept="image/*"
+                            class="form-control border-0"
+                            @change="getImage">
                         </div>
                       </div>
                       <div class="col-lg-2">
@@ -57,8 +66,8 @@
                 <div class="position-relative form-group">
                   <label for="exampleEmail" class>Direktur</label>
                   <input
-                    id="exampleEmail"
-                    name="email"
+                    id="direktur"
+                    name="direktur"
                     placeholder="ganti direktur"
                     type="text"
                     class="form-control">
@@ -66,18 +75,18 @@
                 <div class="position-relative form-group">
                   <label for="examplePassword" class>Alamat</label>
                   <input
-                    id="examplePassword"
-                    name="password"
+                    id="alamat"
+                    name="alamat"
                     placeholder="ganti alamat"
                     type="text"
                     class="form-control">
                 </div>
-                <div class="position-relative form-group">
+                <!-- <div class="position-relative form-group">
                   <label for="exampleText" class>
                     Kantor Cabang
                   </label>
                   <textarea id="exampleText" name="text" class="form-control" />
-                </div>
+                </div> -->
                 <!-- <button class="mt-1 btn btn-primary">Submit</!-->
               </form>
             </div>
@@ -126,11 +135,32 @@ export default {
     subheading:
       'Anda dapat mengedit gambar dan merubah form input di bawah.',
     icon: 'pe-7s-diamond icon-gradient bg-tempting-azure',
-    selectedEditImage: false
+    selectedEditImage: false,
+    image: null,
+    imageSource: null
   }),
   methods: {
     editItem () {
       this.selectedEditImage = !this.selectedEditImage
+    },
+
+    getImage (event) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/JPG', 'image/JPEG', 'image/PNG']
+      const file = this.$refs.filesImgGbp.files[0]
+      if (!allowedTypes.includes(file.type)) {
+        this.message = 'Pastikan file bertipe jpeg, jpg, atau png'
+      } else if (file.size > 3000000) {
+        this.message = 'File Anda terlalu besar, maksimal adalah 3MB'
+      } else {
+        const reader = new FileReader()
+        reader.onload = function () {
+          const output = document.getElementById('imgGbp')
+          output.src = reader.result
+        }
+        this.imageSource = reader.readAsDataURL(event.target.files[0])
+        this.image = file
+        // console.log('edit img carousel ::', this.editImgCarousel)
+      }
     }
   }
 }

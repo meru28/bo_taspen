@@ -33,9 +33,23 @@ export function editCarousel (formData, id) {
   return response
 }
 
-export function deleteCarousel (id) {
+export function deleteCarousel (id, fromPage) {
+  let url = ''
+  switch (fromPage) {
+    case 'InfoBank':
+      url = properties.LIST_API.DELETE_INFO_BANK
+      break
+    case 'Carousel':
+      url = properties.LIST_API.DELETE_CAROUSEL
+      break
+    case 'GaleriCabang':
+      url = properties.LIST_API.DELETE_IMAGE_CABANG
+      break
+    default:
+      url = properties.LIST_API.DELETE_CAROUSEL
+  }
   const response = instance({
-    url: properties.LIST_API.DELETE_CAROUSEL + id,
+    url: url + id,
     method: 'delete'
   })
   return response

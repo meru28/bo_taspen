@@ -6,7 +6,8 @@ export const state = () => ({
   error: '',
   year: 0,
   idImage: '',
-  isLoading: false
+  isLoading: false,
+  fromPage: ''
 })
 
 export const mutations = {
@@ -30,6 +31,10 @@ export const mutations = {
   SET_ID_IMAGE (state, idImage) {
     console.log('cek id image', idImage)
     state.idImage = idImage
+  },
+  SET_FROM_PAGE (state, fromPage) {
+    console.log('from page :', fromPage)
+    state.fromPage = fromPage
   },
   SET_LOADING (state, loading) {
     state.isLoading = loading
@@ -129,5 +134,6 @@ export const getters = {
   getYear: state => state.year,
   getError: state => state.error,
   getIdImage: state => state.idImage,
-  getLoading: state => state.isLoading
+  getLoading: state => state.isLoading,
+  getFromPage: state => state.fromPage
 }

@@ -31,62 +31,60 @@
               <h5 class="card-title">
                 Form Kantor Cabang
               </h5>
-              <form class @submit="onSubmit">
-                <div class="form-row w-100">
-                  <div class="col-lg-4">
-                    <div class="position-relative form-group">
-                      <label for="deskripsi" class="">Tambah Foto</label>
-                      <input
-                        id="deskripsi"
-                        ref="filesCabang"
-                        name="deskripsi"
-                        type="file"
-                        class="form-control border-0"
-                        @focus="resetError"
-                        @change="handleFilesUpload">
-                    </div>
+              <div class="form-row w-100">
+                <div class="col-lg-4">
+                  <div class="position-relative form-group">
+                    <label for="deskripsi" class="">Tambah Foto</label>
+                    <input
+                      id="deskripsi"
+                      ref="filesCabang"
+                      name="deskripsi"
+                      type="file"
+                      class="form-control border-0"
+                      @focus="resetError"
+                      @change="handleFilesUpload">
                   </div>
                 </div>
-                <div class="position-relative form-group">
-                  <label for="exampleEmail" class>Label</label>
-                  <input
-                    id="labelCabang"
-                    v-model="formCabang.label"
-                    placeholder="isi label atau sebagai deskripsi"
-                    type="text"
-                    class="form-control">
-                </div>
-                <div class="position-relative form-group">
-                  <label for="examplePassword" class>Nama Cabang</label>
-                  <input
-                    id="namaCabang"
-                    v-model="formCabang.namaCabang"
-                    placeholder="misal: PT. BPR DP TASPEN Depok"
-                    type="text"
-                    class="form-control">
-                </div>
-                <div class="position-relative form-group">
-                  <label for="exampleText" class>
-                    Alamat Cabang
-                  </label>
-                  <textarea id="alamat" v-model="formCabang.alamatCabang" placeholder="Jl. xxxx...." name="text" class="form-control" />
-                </div>
-                <div class="position-relative form-group">
-                  <label for="exampleText" class>
-                    Telp Cabang
-                  </label>
-                  <input id="telpCabang" v-model="formCabang.telpCabang" placeholder="021 xxxx...." type="number" class="form-control">
-                </div>
-                <!-- <button class="mt-1 btn btn-primary">Submit</!-->
-                <div class="d-block text-right">
-                  <button class="mr-2 btn btn-link btn-sm" @click="$router.push('/galeri-cabang')">
-                    Batal
-                  </button>
-                  <button class="btn btn-primary" type="submit">
-                    Simpan
-                  </button>
-                </div>
-              </form>
+              </div>
+              <div class="position-relative form-group">
+                <label for="exampleEmail" class>Label</label>
+                <input
+                  id="labelCabang"
+                  v-model="formCabang.label"
+                  placeholder="isi label atau sebagai deskripsi"
+                  type="text"
+                  class="form-control">
+              </div>
+              <div class="position-relative form-group">
+                <label for="examplePassword" class>Nama Cabang</label>
+                <input
+                  id="namaCabang"
+                  v-model="formCabang.namaCabang"
+                  placeholder="misal: PT. BPR DP TASPEN Depok"
+                  type="text"
+                  class="form-control">
+              </div>
+              <div class="position-relative form-group">
+                <label for="exampleText" class>
+                  Alamat Cabang
+                </label>
+                <textarea id="alamat" v-model="formCabang.alamatCabang" placeholder="Jl. xxxx...." name="text" class="form-control" />
+              </div>
+              <div class="position-relative form-group">
+                <label for="exampleText" class>
+                  Telp Cabang
+                </label>
+                <input id="telpCabang" v-model="formCabang.telpCabang" placeholder="021 xxxx...." type="number" class="form-control">
+              </div>
+              <!-- <button class="mt-1 btn btn-primary">Submit</!-->
+              <div class="d-block text-right">
+                <button class="mr-2 btn btn-link btn-sm" @click="$router.push('/galeri-cabang')">
+                  Batal
+                </button>
+                <button class="btn btn-primary" @click="onSubmit">
+                  Simpan
+                </button>
+              </div>
             </div>
           </VuePerfectScrollbar>
         </div>
@@ -159,7 +157,6 @@ export default {
     handleFilesUpload (id) {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/JPG', 'image/JPEG', 'image/PNG']
       const file = this.$refs.filesCabang.files[0]
-      console.log('isi file', file)
       if (!allowedTypes.includes(file.type)) {
         this.message = 'Pastikan file bertipe jpeg, jpg, atau png'
       } else if (file.size > 3000000) {
