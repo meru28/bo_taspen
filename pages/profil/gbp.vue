@@ -211,10 +211,10 @@ export default {
 
     async getGbp () {
       this.isLoading = true
-      await this.$axios.get('http://localhost:8081/api/profil/gbp')
+      await this.$axios.get('https://bprtaspen.com/api/profil/gbp')
         .then((res) => {
           this.isLoading = false
-          this.image = res.data.imageGbp.imagePath
+          this.image = res.data.imageGbp.imageUrl
           this.dataGbp.konsolidasi = res.data.konsolidasi
           this.dataGbp.direktur = res.data.direktur
           this.dataGbp.alamat = res.data.alamat
