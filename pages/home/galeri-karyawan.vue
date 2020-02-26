@@ -12,6 +12,16 @@
           <h5 class="card-title">
             Daftar Galeri Karyawan
           </h5>
+          <div v-show="message !== ''" id="toast-container" class="toast-bottom-left">
+            <div class="toast toast-error" aria-live="assertive" style="">
+              <div class="toast-title">
+                Perhatian!
+              </div>
+              <div class="toast-message">
+                {{ message }}
+              </div>
+            </div>
+          </div>
           <div class="card-hover-shadow-2x mb-3 card">
             <div class="scroll-area-lg" style="height : 415px">
               <ul class="todo-list-wrapper list-group list-group-flush">
@@ -22,6 +32,7 @@
                       <div class="widget-content-left mr-3">
                         <div class="widget-content-left">
                           <img
+                            id="imgEmp"
                             width="200"
                             class="rounded"
                             :src="emp.imageUrl"
@@ -34,7 +45,17 @@
                             <div class="col-sm-4">
                               <div class="position-relative form-group">
                                 <label for="editEmp" class="">Rubah Foto</label>
-                                <input id="editImgEmp" name="employee" placeholder="deskripsi" type="file" class="form-control border-0">
+                                <input
+                                  id="editImgEmp"
+                                  ref="filesImgEmp"
+                                  name="employee"
+                                  placeholder="ganti foto"
+                                  type="file"
+                                  multiple
+                                  accept="image/*"
+                                  class="form-control border-0"
+                                  @focus="resetError"
+                                  @change="getImage">
                               </div>
                             </div>
                             <div class="col-lg-5">
@@ -166,7 +187,9 @@ export default {
       icon: 'pe-7s-user icon-gradient bg-amy-crisp',
       selectedEditId: '',
       imgEmployee: [],
-      editImgEmployee: [],
+      editImgEmployee: null,
+      imageSource: null,
+      message: '',
       labelEmp: 'Edit Deskripsi Anda',
       isLoading: false,
       fullPage: true
@@ -184,6 +207,35 @@ export default {
         const ids = this.imgEmployee.find(obj => obj._id === id.toString())
         this.labelEmp = ids.label
         // console.log(ids)
+      }
+    },
+
+    resetError () {
+      this.message = ''
+    },
+
+    getImage (event) {
+      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/JPG', 'image/JPEG', 'image/PNG']
+      let file = document.getElementById('editImgEmp').files[0]
+      if (!allowedTypes.includes(file.type)) {
+        // console.log('masuk if')
+        this.message = 'Pastikan file bertipe jpeg, jpg, atau png'
+        this.image = null
+      } else if (file.size > 3000000) {
+        file = null
+        this.image = null
+        // console.log('masuk if pengecekan size')
+        this.message = 'File Anda terlalu besar, maksimal adalah 3MB'
+      } else {
+        // console.log('lolos')
+        const reader = new FileReader()
+        reader.onload = function () {
+          const output = document.getElementById('imgEmp')
+          output.src = reader.result
+        }
+        this.imageSource = reader.readAsDataURL(event.target.files[0])
+        this.image = file
+        // console.log('edit img carousel ::', this.editImgCarousel)
       }
     },
 
@@ -207,10 +259,13 @@ export default {
       evt.preventDefault()
       this.isLoading = true
       const formData = new FormData()
-      if (document.getElementById('editImgEmp').files[0] !== undefined) {
-        formData.append('pictEditEmployee', document.getElementById('editImgEmp').files[0])
+      if (this.image !== undefined) {
+        formData.append('pictEditEmployee', this.image)
       }
       formData.append('labelEmp', JSON.stringify(this.labelEmp))
+      // for (const value of formData.values()) {
+      //   console.log('isi fd ::', value)
+      // }
       await editEmployee(formData, this.selectedEditId)
         .then((res) => {
           this.isLoading = false

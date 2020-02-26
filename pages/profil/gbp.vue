@@ -1,5 +1,10 @@
 <template>
   <div>
+    <Loading
+      :active.sync="isLoading"
+      :can-cancel="true"
+      color="#0f4c75"
+      :is-full-page="fullPage" />
     <PageTitle :heading="heading" :subheading="subheading" :icon="icon" />
     <div class="row">
       <div class="col-12">
@@ -11,6 +16,16 @@
               </h5>
             </div>
           </div>
+          <div v-show="message !== ''" id="toast-container" class="toast-bottom-left">
+            <div class="toast toast-error" aria-live="assertive" style="">
+              <div class="toast-title">
+                Perhatian!
+              </div>
+              <div class="toast-message">
+                {{ message }}
+              </div>
+            </div>
+          </div>
           <VuePerfectScrollbar class="scrollbar-container">
             <ul class="todo-list-wrapper list-group list-group-flush">
               <li class="list-group-item">
@@ -19,7 +34,9 @@
                   <div class="widget-content-wrapper">
                     <div class="widget-content-left mr-3">
                       <div class="widget-content-left">
-                        <img id="imgGbp" width="100" class="rounded" :src="imageSource" alt>
+                        <client-only>
+                          <img id="imgGbp" width="100" class="rounded" :src="image" alt>
+                        </client-only>
                       </div>
                     </div>
                     <div v-if="selectedEditImage === true" class="form-row w-100">
@@ -32,7 +49,6 @@
                             name="foto"
                             placeholder="ganti foto"
                             type="file"
-                            multiple
                             accept="image/*"
                             class="form-control border-0"
                             @change="getImage">
@@ -62,11 +78,22 @@
               <h5 class="card-title">
                 Form Gbp
               </h5>
-              <form class>
+              <form @submit="onSubmitEdit">
+                <div class="position-relative form-group">
+                  <label for="konsolidasi" class>Konsolidasi</label>
+                  <input
+                    id="konsolidasi"
+                    v-model="dataGbp.konsolidasi"
+                    name="konsolidasi"
+                    placeholder="konsolidasi"
+                    type="text"
+                    class="form-control">
+                </div>
                 <div class="position-relative form-group">
                   <label for="exampleEmail" class>Direktur</label>
                   <input
                     id="direktur"
+                    v-model="dataGbp.direktur"
                     name="direktur"
                     placeholder="ganti direktur"
                     type="text"
@@ -74,31 +101,26 @@
                 </div>
                 <div class="position-relative form-group">
                   <label for="examplePassword" class>Alamat</label>
-                  <input
+                  <textarea
                     id="alamat"
+                    v-model="dataGbp.alamat"
                     name="alamat"
                     placeholder="ganti alamat"
                     type="text"
-                    class="form-control">
+                    class="form-control" />
                 </div>
-                <!-- <div class="position-relative form-group">
-                  <label for="exampleText" class>
-                    Kantor Cabang
-                  </label>
-                  <textarea id="exampleText" name="text" class="form-control" />
-                </div> -->
                 <!-- <button class="mt-1 btn btn-primary">Submit</!-->
+                <div class="d-block text-right">
+                  <!-- <button class="mr-2 btn btn-link btn-sm">
+                    Batal
+                  </button> -->
+                  <button class="btn btn-primary" type="submit">
+                    Simpan
+                  </button>
+                </div>
               </form>
             </div>
           </VuePerfectScrollbar>
-          <div class="d-block text-right card-footer">
-            <!-- <button class="mr-2 btn btn-link btn-sm">
-              Batal
-            </button> -->
-            <button class="btn btn-primary">
-              Simpan
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -107,6 +129,9 @@
 
 <script>
 import VuePerfectScrollbar from 'vue-perfect-scrollbar'
+import Loading from 'vue-loading-overlay'
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faTrashAlt,
@@ -128,7 +153,8 @@ export default {
   components: {
     PageTitle,
     VuePerfectScrollbar,
-    'font-awesome-icon': FontAwesomeIcon
+    'font-awesome-icon': FontAwesomeIcon,
+    Loading
   },
   data: () => ({
     heading: 'Garis Besar Perusahaan',
@@ -137,21 +163,41 @@ export default {
     icon: 'pe-7s-diamond icon-gradient bg-tempting-azure',
     selectedEditImage: false,
     image: null,
-    imageSource: null
+    imageSource: null,
+    message: '',
+    isLoading: false,
+    fullPage: true,
+    dataGbp: {
+      konsolidasi: '',
+      direktur: '',
+      alamat: ''
+    }
   }),
+  created () {
+    this.getGbp()
+  },
+  mounted () {
+  },
   methods: {
     editItem () {
       this.selectedEditImage = !this.selectedEditImage
+      this.message = ''
     },
 
     getImage (event) {
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/JPG', 'image/JPEG', 'image/PNG']
-      const file = this.$refs.filesImgGbp.files[0]
+      let file = this.$refs.filesImgGbp.files[0]
       if (!allowedTypes.includes(file.type)) {
+        console.log('masuk if')
         this.message = 'Pastikan file bertipe jpeg, jpg, atau png'
+        this.image = null
       } else if (file.size > 3000000) {
+        file = null
+        this.image = null
+        console.log('masuk if pengecekan size')
         this.message = 'File Anda terlalu besar, maksimal adalah 3MB'
       } else {
+        console.log('lolos')
         const reader = new FileReader()
         reader.onload = function () {
           const output = document.getElementById('imgGbp')
@@ -161,6 +207,61 @@ export default {
         this.image = file
         // console.log('edit img carousel ::', this.editImgCarousel)
       }
+    },
+
+    async getGbp () {
+      this.isLoading = true
+      await this.$axios.get('http://localhost:8081/api/profil/gbp')
+        .then((res) => {
+          this.isLoading = false
+          this.image = res.data.imageGbp.imagePath
+          this.dataGbp.konsolidasi = res.data.konsolidasi
+          this.dataGbp.direktur = res.data.direktur
+          this.dataGbp.alamat = res.data.alamat
+          console.log('response :', res.data)
+        }).catch(err => console.log('err :', err))
+    },
+
+    async onSubmit (evt) {
+      evt.preventDefault()
+      console.log('isi :', this.image)
+      if (this.image) {
+        const formData = new FormData()
+        const headers = {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        }
+        formData.append('pictGbp', this.image)
+        formData.append('dataGbp', JSON.stringify(this.dataGbp))
+        for (const value of formData.values()) {
+          console.log('isi fd ::', value)
+        }
+        await this.$axios.post('https://bprtaspen.com/api/profil/gbp/add', formData, headers)
+          .then((res) => {
+            console.log('response :', res)
+          }).catch(err => console.log('error :', err))
+      }
+    },
+
+    async onSubmitEdit (evt) {
+      evt.preventDefault()
+      this.isLoading = true
+      // console.log('isi :', this.image)
+      const formData = new FormData()
+      // const headers = {
+      //   headers: { 'Content-Type': 'multipart/form-data' }
+      // }
+      if (this.image) {
+        formData.append('pictEditGbp', this.image)
+      }
+      formData.append('replaceData', JSON.stringify(this.dataGbp))
+      // for (const value of formData.values()) {
+      //   console.log('isi fd ::', value)
+      // }
+      await this.$axios.post('https://bprtaspen.com/api/profil/gbp/edit', formData)
+        .then((res) => {
+          this.isLoading = false
+          console.log('response :', res)
+        }).catch(err => console.log('error :', err))
     }
   }
 }
