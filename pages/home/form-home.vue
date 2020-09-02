@@ -143,6 +143,15 @@ export default {
     PageTitle,
     Loading
   },
+  filters: {
+    localeString (value) {
+      if (!value) {
+        return ''
+      }
+      value = value.toLocaleString('id-ID')
+      return value
+    }
+  },
   data () {
     return {
       heading: 'Form Beranda',
@@ -175,11 +184,15 @@ export default {
           this.periode = res.data.home.periode
           this.jangkaWaktu = res.data.home.jangkaWaktu
           this.sukuBunga = res.data.home.sukuBunga
-          this.dataNasabah.nasabah = res.data.home.dataNasabah.nasabah
-          this.dataNasabah.deposit = res.data.home.dataNasabah.deposit
-          this.dataNasabah.kredit = res.data.home.dataNasabah.kredit
+          this.dataNasabah.nasabah = this.$options.filters.localeString(res.data.home.dataNasabah.nasabah)
+          this.dataNasabah.deposit = this.$options.filters.localeString(res.data.home.dataNasabah.deposit)
+          this.dataNasabah.kredit = this.$options.filters.localeString(res.data.home.dataNasabah.kredit)
           this.bprDescription = res.data.home.bprDescription
         }).catch(err => console.log('gagal fetching home', err))
+    },
+
+    prices (prefix, price) {
+      return !isNaN(price) && prefix + ' ' + (Math.round(price)).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     },
 
     async onSubmit (evt) {

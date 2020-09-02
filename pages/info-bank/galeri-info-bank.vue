@@ -25,12 +25,13 @@
           <div class="card-hover-shadow-2x mb-3 card">
             <div class="scroll-area-lg">
               <ul class="todo-list-wrapper list-group list-group-flush">
-                <li v-for="(img) in imgGaleriBank" :key="img._id" class="list-group-item">
+                <li v-for="(img, idx) in imgGaleriBank" :key="img._id" class="list-group-item">
                   <div class="todo-indicator bg-info" />
                   <div class="widget-content p-0">
                     <div class="widget-content-wrapper">
                       <div class="widget-content-left mr-3">
                         <div class="widget-content-left">
+                          <span style="margin-right: 20px">{{ idx+1 }}</span>
                           <img
                             width="100"
                             class="rounded"

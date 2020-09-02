@@ -123,6 +123,12 @@
               Galeri Info Bank
             </router-link>
           </li>
+          <li>
+            <router-link to="/laporan-publikasi">
+              <i class="metismenu-icon pe-7s-notebook" />
+              Laporan Publikasi
+            </router-link>
+          </li>
           <!-- <li class="app-sidebar__heading">
             Inbox
           </li>

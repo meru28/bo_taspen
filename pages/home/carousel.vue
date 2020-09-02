@@ -40,9 +40,6 @@
                             :value="carousel._id"
                             class="custom-control-input"> -->
                           <p>{{ idx+1 }}</p>
-                          <!-- <label
-                            class="custom-control-label"
-                            for="exampleCustomCheckbox2">&nbsp;</label> -->
                         </div>
                       </div>
                       <div class="widget-content-left mr-3">
