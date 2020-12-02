@@ -30,6 +30,7 @@
     "jquery": "^3.4.1",
     "js-cookie": "^2.2.1",
     "jsdom": "^15.2.1",
+    "moment": "^2.29.1",
     "node-sass": "^4.13.0",
     "nuxt": "^2.0.0",
     "pe7-icon": "^1.0.4",
@@ -41,6 +42,7 @@
     "vue-perfect-scrollbar": "^0.2.1",
     "vue-sidebar-menu": "^4.4.4",
     "vue-sweetalert2": "^3.0.1",
+    "vue2-datepicker": "^3.6.2",
     "vue2-editor": "^2.10.2"
   },
   "devDependencies": {

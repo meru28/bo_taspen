@@ -18,6 +18,7 @@ import Layanan from '~/pages/produk-layanan/layanan'
 import InfoBank from '~/pages/info-bank/galeri-info-bank'
 import AddInfoBank from '~/pages/info-bank/addImgInfoBank'
 import VideoBank from '~/pages/info-bank/galeri-video-bank'
+import LapPublikasi from '~/pages/laporan-publikasi/laporan-publikasi'
 
 Vue.use(Router)
 
@@ -117,6 +118,11 @@ export function createRouter () {
         props: route => ({
           params: route.params
         })
+      },
+      {
+        path: '/laporan-publikasi',
+        component: LapPublikasi,
+        name: 'LaporanPublikasi'
       }
     ]
   })
